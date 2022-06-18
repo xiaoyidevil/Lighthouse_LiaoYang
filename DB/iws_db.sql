@@ -45,25 +45,30 @@ CREATE TABLE `m_demander`  (
 DROP TABLE IF EXISTS `m_jurisdiction`;
 CREATE TABLE `m_jurisdiction`  (
   `JurisdictionId` int(0) NOT NULL AUTO_INCREMENT COMMENT '权限ID',
+  `JurisdictionLevel` int(0) NOT NULL COMMENT '权限层级',
+  `ParentID` int(0) NOT NULL COMMENT '父级权限ID',
   `JurisdictionName` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限名称',
+  `JurisdictionPath` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限路径',
   `CreateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `CreateTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `CreateTime` TIMESTAMP COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NOW(),
   `UpdateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `UpdateTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`JurisdictionId`) USING BTREE
+  `UpdateTime` TIMESTAMP COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NOW(),
+  `IsDelete` Bit NOT NULL DEFAULT 0,
+  PRIMARY KEY (`JurisdictionId`,`JurisdictionLevel`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_jurisdiction
 -- ----------------------------
-INSERT INTO `m_jurisdiction` VALUES (1, '一级菜单权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (2, '二级菜单权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (3, '三级菜单权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (4, '查看权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (5, '新增权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (6, '修改权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (7, '删除权限', NULL, NULL, NULL, NULL);
-INSERT INTO `m_jurisdiction` VALUES (8, '审核权限', NULL, NULL, NULL, NULL);
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('1', '1', '0', '主数据管理', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('2', '1', '0', '入场申请', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('3', '1', '0', '称重流程管理', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('4', '1', '0', '出场门禁', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('5', '1', '0', '报表查询', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('6', '1', '0', '硬件设备检查', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('1', '2', '1', '车辆信息数据', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('2', '2', '1', '基本用户管理', '', 'system', 'system');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`, `CreateUser`, `UpdateUser`) VALUES ('3', '2', '1', '物料基本信息', '', 'system', 'system');
 
 -- ----------------------------
 -- Table structure for m_material
