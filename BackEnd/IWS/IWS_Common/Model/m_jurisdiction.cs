@@ -7,59 +7,34 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 用户表数据模型
+    /// 权限数据模型
     /// </summary>
-    public class m_user
+    public class m_jurisdiction
     {
         /// <summary>
-        /// 用户ID
+        /// 权限ID
         /// </summary>
-        public string UserId { get; set; }
+        public int? JurisdictionId { get; set; }
 
         /// <summary>
-        /// 用户名
+        /// 权限层级
         /// </summary>
-        public string UserName { get; set; }
+        public int? JurisdictionLevel { get; set; }
 
         /// <summary>
-        /// 密码
+        /// 父级权限ID
         /// </summary>
-        public string Password { get; set; }
+        public int? ParentID { get; set; }
 
         /// <summary>
         /// 权限名称
         /// </summary>
-        public string Role { get; set; }
+        public string JurisdictionName { get; set; }
 
         /// <summary>
-        /// 电话
+        /// 权限路径
         /// </summary>
-        public string Telephone { get; set; }
-
-        /// <summary>
-        /// 身份证
-        /// </summary>
-        public string IdCard { get; set; }
-
-        /// <summary>
-        /// 单位名称
-        /// </summary>
-        public string CompanyName { get; set; }
-
-        /// <summary>
-        /// 年龄
-        /// </summary>
-        public string Age { get; set; }
-
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public string Sex { get; set; }
-
-        /// <summary>
-        /// 邮箱
-        /// </summary>
-        public string Email { get; set; }
+        public string JurisdictionPath { get; set; }        
 
         /// <summary>
         /// 删除标记
@@ -85,10 +60,5 @@ namespace IWS_Common.Model
         /// 更新时间
         /// </summary>
         public DateTime? UpdateTime { get; set; }
-
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public string Remark { get; set; }
     }
 }

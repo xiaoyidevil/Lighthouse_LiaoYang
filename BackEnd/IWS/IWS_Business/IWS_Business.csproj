@@ -84,8 +84,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\RoleBusiness.cs" />
+    <Compile Include="Business\SupplierBusiness.cs" />
+    <Compile Include="Business\RegistrationBusiness.cs" />
+    <Compile Include="Business\MaterialBusiness.cs" />
+    <Compile Include="Business\JurisdictionBusiness.cs" />
+    <Compile Include="Business\DemanderBusiness.cs" />
+    <Compile Include="Business\ApprovalBusiness.cs" />
+    <Compile Include="Business\VehicleBusiness.cs" />
     <Compile Include="Business\UserBusiness.cs" />
-    <Compile Include="Interface\InterfaceBusiness.cs" />
+    <Compile Include="BusinessIF\InterfaceBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

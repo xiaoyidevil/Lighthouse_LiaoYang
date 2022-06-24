@@ -7,59 +7,39 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 用户表数据模型
+    /// 车辆信息表数据模型
     /// </summary>
-    public class m_user
+    public class m_vehicle
     {
         /// <summary>
-        /// 用户ID
+        /// 车牌号码
         /// </summary>
-        public string UserId { get; set; }
+        public string VehicleNumber { get; set; }
 
         /// <summary>
-        /// 用户名
-        /// </summary>
-        public string UserName { get; set; }
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// 权限名称
-        /// </summary>
-        public string Role { get; set; }
-
-        /// <summary>
-        /// 电话
-        /// </summary>
-        public string Telephone { get; set; }
-
-        /// <summary>
-        /// 身份证
-        /// </summary>
-        public string IdCard { get; set; }
-
-        /// <summary>
-        /// 单位名称
+        /// 经营企业名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 年龄
+        /// 品牌型号
         /// </summary>
-        public string Age { get; set; }
+        public string BrandModel { get; set; }
 
         /// <summary>
-        /// 性别
+        /// 车身颜色
         /// </summary>
-        public string Sex { get; set; }
+        public string Color { get; set; }
 
         /// <summary>
-        /// 邮箱
+        /// 车身重量（公斤）
         /// </summary>
-        public string Email { get; set; }
+        public double? Weight { get; set; }
+
+        /// <summary>
+        /// 满载重量（公斤）
+        /// </summary>
+        public double? FullLoadWeight { get; set; }
 
         /// <summary>
         /// 删除标记

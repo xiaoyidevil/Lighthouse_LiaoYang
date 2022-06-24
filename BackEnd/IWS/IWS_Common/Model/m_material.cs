@@ -7,59 +7,44 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 用户表数据模型
+    /// 物料表数据模型
     /// </summary>
-    public class m_user
+    public class m_material
     {
         /// <summary>
-        /// 用户ID
+        /// 物料编号
         /// </summary>
-        public string UserId { get; set; }
+        public string MaterialId { get; set; }
 
         /// <summary>
-        /// 用户名
+        /// 物料名称
         /// </summary>
-        public string UserName { get; set; }
+        public string MaterialName { get; set; }
 
         /// <summary>
-        /// 密码
+        /// 物料英文名称
         /// </summary>
-        public string Password { get; set; }
+        public string MaterialEnglishName { get; set; }
 
         /// <summary>
-        /// 权限名称
+        /// 规格型号
         /// </summary>
-        public string Role { get; set; }
+        public string SpecificationsModel { get; set; }
 
         /// <summary>
-        /// 电话
+        /// 材质
         /// </summary>
-        public string Telephone { get; set; }
+        public string Material { get; set; }
 
         /// <summary>
-        /// 身份证
+        /// 物料类别
         /// </summary>
-        public string IdCard { get; set; }
+        public string MaterialKind { get; set; }
 
         /// <summary>
-        /// 单位名称
+        /// 计量单位
         /// </summary>
-        public string CompanyName { get; set; }
-
-        /// <summary>
-        /// 年龄
-        /// </summary>
-        public string Age { get; set; }
-
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public string Sex { get; set; }
-
-        /// <summary>
-        /// 邮箱
-        /// </summary>
-        public string Email { get; set; }
+        public string Unit { get; set; }        
 
         /// <summary>
         /// 删除标记

@@ -7,59 +7,34 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 用户表数据模型
+    /// 角色表数据模型
     /// </summary>
-    public class m_user
+    public class m_role
     {
         /// <summary>
-        /// 用户ID
+        /// 角色ID
         /// </summary>
-        public string UserId { get; set; }
+        public int? RoleId { get; set; }
 
         /// <summary>
-        /// 用户名
+        /// 角色名称
         /// </summary>
-        public string UserName { get; set; }
+        public string RoleName { get; set; }
 
         /// <summary>
-        /// 密码
+        /// 角色拥有权限
         /// </summary>
-        public string Password { get; set; }
+        public string JurisdictionId { get; set; }
 
         /// <summary>
-        /// 权限名称
+        /// 所属部门ID
         /// </summary>
-        public string Role { get; set; }
+        public string DepartmentId { get; set; }
 
         /// <summary>
-        /// 电话
+        /// 所属部门名称
         /// </summary>
-        public string Telephone { get; set; }
-
-        /// <summary>
-        /// 身份证
-        /// </summary>
-        public string IdCard { get; set; }
-
-        /// <summary>
-        /// 单位名称
-        /// </summary>
-        public string CompanyName { get; set; }
-
-        /// <summary>
-        /// 年龄
-        /// </summary>
-        public string Age { get; set; }
-
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public string Sex { get; set; }
-
-        /// <summary>
-        /// 邮箱
-        /// </summary>
-        public string Email { get; set; }
+        public string DepartmentName { get; set; }        
 
         /// <summary>
         /// 删除标记

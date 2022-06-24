@@ -90,9 +90,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dao\SupplierDao.cs" />
+    <Compile Include="Dao\DemanderDao.cs" />
+    <Compile Include="Dao\JurisdictionDao.cs" />
+    <Compile Include="Dao\MaterialDao.cs" />
+    <Compile Include="Dao\RoleDao.cs" />
+    <Compile Include="Dao\ApprovalDao.cs" />
+    <Compile Include="Dao\RegistrationDao.cs" />
+    <Compile Include="Dao\VehicleDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
-    <Compile Include="Inerface\AbstractDao.cs" />
-    <Compile Include="Inerface\InterfaceDao.cs" />
+    <Compile Include="DaoIF\AbstractDao.cs" />
+    <Compile Include="DaoIF\InterfaceDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

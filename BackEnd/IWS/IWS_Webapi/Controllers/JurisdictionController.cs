@@ -15,44 +15,40 @@ using System.Web.Http;
 namespace IWS_Webapi.Controllers
 {
     /// <summary>
-    /// 用户Controller
+    /// 权限Controller
     /// </summary>
-    public class UserController : ApiController
+    public class JurisdictionController : ApiController
     {
         /// <summary>
-        /// 用户数据查询
+        /// 权限数据查询
         /// </summary>
         /// <returns></returns>
         public HttpResponseMessage GetUserData()
         {
-            InterfaceBusiness<m_user> userBusiness;                // 业务层对象
-            QueryModel model;                                      // Json序列化对象
-            List<m_user> lstUser;                                  // 用户数据集合
-            Dictionary<string, string> dicCondition;               // 条件集合
-            string rtnJson = string.Empty;                         // 返回用Json字符串
-            int startIndex = 0;                                    // 数据条数开始索引
+            InterfaceBusiness<m_jurisdiction> jurisdictionBusiness;                // 业务层对象
+            QueryModel model;                                                      // Json序列化对象
+            List<m_jurisdiction> lstJurisdiction;                                  // 用户数据集合
+            Dictionary<string, string> dicCondition;                               // 条件集合
+            string rtnJson = string.Empty;                                         // 返回用Json字符串
+            int startIndex = 0;                                                    // 数据条数开始索引
 
             int currentPage = 0;
             int pageCnt = 1;
             string strCurrentPage;
             string strPageCnt;
-            string userId;
-            string userName;
-            string telephone;
-            string idCard;
-            string age;
-            string sex;
+            string jurisdictionId;
+            string jurisdictionLevel;
+            string jurisdictionName;
+            string jurisdictionPath;
 
             List<KeyValuePair<string, string>> requestList = Request.GetQueryNameValuePairs().ToList();
 
             strCurrentPage = requestList.Exists(s => s.Key == "currentPage") ? requestList.First(s => s.Key == "currentPage").Value : "";
             strPageCnt = requestList.Exists(s => s.Key == "pageCnt") ? requestList.First(s => s.Key == "pageCnt").Value : "";
-            userId = requestList.Exists(s => s.Key == "userId") ? requestList.First(s => s.Key == "userId").Value : "";
-            userName = requestList.Exists(s => s.Key == "userName") ? requestList.First(s => s.Key == "userName").Value : "";
-            telephone = requestList.Exists(s => s.Key == "telephone") ? requestList.First(s => s.Key == "telephone").Value : "";
-            idCard = requestList.Exists(s => s.Key == "idCard") ? requestList.First(s => s.Key == "idCard").Value : "";
-            age = requestList.Exists(s => s.Key == "age") ? requestList.First(s => s.Key == "age").Value : "";
-            sex = requestList.Exists(s => s.Key == "sex") ? requestList.First(s => s.Key == "sex").Value : "";
+            jurisdictionId = requestList.Exists(s => s.Key == "jurisdictionId") ? requestList.First(s => s.Key == "jurisdictionId").Value : "";
+            jurisdictionLevel = requestList.Exists(s => s.Key == "jurisdictionLevel") ? requestList.First(s => s.Key == "jurisdictionLevel").Value : "";
+            jurisdictionName = requestList.Exists(s => s.Key == "jurisdictionName") ? requestList.First(s => s.Key == "jurisdictionName").Value : "";
+            jurisdictionPath = requestList.Exists(s => s.Key == "jurisdictionPath") ? requestList.First(s => s.Key == "jurisdictionPath").Value : "";
 
             int.TryParse(strCurrentPage, out currentPage);
             int.TryParse(strPageCnt, out pageCnt);
@@ -62,9 +58,9 @@ namespace IWS_Webapi.Controllers
             try
             {
                 // 对象实例化
-                userBusiness = new UserBusiness();
+                jurisdictionBusiness = new JurisdictionBusiness();
                 model = new QueryModel();
-                lstUser = new List<m_user>();
+                lstJurisdiction = new List<m_jurisdiction>();
                 dicCondition = new Dictionary<string, string>();
 
                 // 创建WebApi数据库连接
@@ -73,12 +69,12 @@ namespace IWS_Webapi.Controllers
 
                 // 条件编辑
                 startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetUserCondition(startIndex, pageCnt, userId, userName, telephone, idCard, age, sex);
+                dicCondition = AppCommon.GetJurisdictionCondition(startIndex, pageCnt, jurisdictionId, jurisdictionLevel, jurisdictionName, jurisdictionPath);
 
                 // Json数据序列化
-                lstUser = userBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
-                model.Data = lstUser;
-                model.TotalDataCount = userBusiness.SelectDataCnt(DbHelper.GetMysqlConnection(), dicCondition);
+                lstJurisdiction = jurisdictionBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
+                model.Data = lstJurisdiction;
+                model.TotalDataCount = jurisdictionBusiness.SelectDataCnt(DbHelper.GetMysqlConnection(), dicCondition);
                 model.CurrentPage = currentPage;
                 model.TotalPageCnt = AppCommon.GetTotalPageCnt(pageCnt, model.TotalDataCount);
                 model.State = 1;

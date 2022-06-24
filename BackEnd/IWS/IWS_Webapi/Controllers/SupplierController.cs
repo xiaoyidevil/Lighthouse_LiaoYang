@@ -15,19 +15,19 @@ using System.Web.Http;
 namespace IWS_Webapi.Controllers
 {
     /// <summary>
-    /// 用户Controller
+    /// 供应商Controller
     /// </summary>
-    public class UserController : ApiController
+    public class SupplierController : ApiController
     {
         /// <summary>
         /// 用户数据查询
         /// </summary>
         /// <returns></returns>
-        public HttpResponseMessage GetUserData()
+        public HttpResponseMessage GetSupplierData()
         {
-            InterfaceBusiness<m_user> userBusiness;                // 业务层对象
+            InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
             QueryModel model;                                      // Json序列化对象
-            List<m_user> lstUser;                                  // 用户数据集合
+            List<m_supplier> lstSupplier;                          // 用户数据集合
             Dictionary<string, string> dicCondition;               // 条件集合
             string rtnJson = string.Empty;                         // 返回用Json字符串
             int startIndex = 0;                                    // 数据条数开始索引
@@ -36,23 +36,29 @@ namespace IWS_Webapi.Controllers
             int pageCnt = 1;
             string strCurrentPage;
             string strPageCnt;
-            string userId;
-            string userName;
-            string telephone;
-            string idCard;
-            string age;
-            string sex;
+            string supplierId;
+            string companyName;
+            string companyAddress;
+            string postCode1;
+            string postCode2;
+            string website;
+            string natureEnterprise;
+            string tel;
+            string fax;
 
             List<KeyValuePair<string, string>> requestList = Request.GetQueryNameValuePairs().ToList();
 
             strCurrentPage = requestList.Exists(s => s.Key == "currentPage") ? requestList.First(s => s.Key == "currentPage").Value : "";
             strPageCnt = requestList.Exists(s => s.Key == "pageCnt") ? requestList.First(s => s.Key == "pageCnt").Value : "";
-            userId = requestList.Exists(s => s.Key == "userId") ? requestList.First(s => s.Key == "userId").Value : "";
-            userName = requestList.Exists(s => s.Key == "userName") ? requestList.First(s => s.Key == "userName").Value : "";
-            telephone = requestList.Exists(s => s.Key == "telephone") ? requestList.First(s => s.Key == "telephone").Value : "";
-            idCard = requestList.Exists(s => s.Key == "idCard") ? requestList.First(s => s.Key == "idCard").Value : "";
-            age = requestList.Exists(s => s.Key == "age") ? requestList.First(s => s.Key == "age").Value : "";
-            sex = requestList.Exists(s => s.Key == "sex") ? requestList.First(s => s.Key == "sex").Value : "";
+            supplierId = requestList.Exists(s => s.Key == "supplierId") ? requestList.First(s => s.Key == "supplierId").Value : "";
+            companyName = requestList.Exists(s => s.Key == "companyName") ? requestList.First(s => s.Key == "companyName").Value : "";
+            companyAddress = requestList.Exists(s => s.Key == "companyAddress") ? requestList.First(s => s.Key == "companyAddress").Value : "";
+            postCode1 = requestList.Exists(s => s.Key == "postCode1") ? requestList.First(s => s.Key == "postCode1").Value : "";
+            postCode2 = requestList.Exists(s => s.Key == "postCode2") ? requestList.First(s => s.Key == "postCode2").Value : "";
+            website = requestList.Exists(s => s.Key == "website") ? requestList.First(s => s.Key == "website").Value : "";
+            natureEnterprise = requestList.Exists(s => s.Key == "natureEnterprise") ? requestList.First(s => s.Key == "natureEnterprise").Value : "";
+            tel = requestList.Exists(s => s.Key == "tel") ? requestList.First(s => s.Key == "tel").Value : "";
+            fax = requestList.Exists(s => s.Key == "fax") ? requestList.First(s => s.Key == "fax").Value : "";
 
             int.TryParse(strCurrentPage, out currentPage);
             int.TryParse(strPageCnt, out pageCnt);
@@ -62,9 +68,9 @@ namespace IWS_Webapi.Controllers
             try
             {
                 // 对象实例化
-                userBusiness = new UserBusiness();
+                supplierBusiness = new SupplierBusiness();
                 model = new QueryModel();
-                lstUser = new List<m_user>();
+                lstSupplier = new List<m_supplier>();
                 dicCondition = new Dictionary<string, string>();
 
                 // 创建WebApi数据库连接
@@ -73,12 +79,12 @@ namespace IWS_Webapi.Controllers
 
                 // 条件编辑
                 startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetUserCondition(startIndex, pageCnt, userId, userName, telephone, idCard, age, sex);
+                dicCondition = AppCommon.GetSupplierCondition(startIndex, pageCnt, supplierId, companyName, companyAddress, postCode1, postCode2, website, natureEnterprise, tel, fax);
 
                 // Json数据序列化
-                lstUser = userBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
-                model.Data = lstUser;
-                model.TotalDataCount = userBusiness.SelectDataCnt(DbHelper.GetMysqlConnection(), dicCondition);
+                lstSupplier = supplierBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
+                model.Data = lstSupplier;
+                model.TotalDataCount = supplierBusiness.SelectDataCnt(DbHelper.GetMysqlConnection(), dicCondition);
                 model.CurrentPage = currentPage;
                 model.TotalPageCnt = AppCommon.GetTotalPageCnt(pageCnt, model.TotalDataCount);
                 model.State = 1;

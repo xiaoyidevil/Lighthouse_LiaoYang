@@ -7,59 +7,54 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 用户表数据模型
+    /// 需求方数据模型
     /// </summary>
-    public class m_user
+    public class m_demander
     {
         /// <summary>
-        /// 用户ID
+        /// 需求方编号
         /// </summary>
-        public string UserId { get; set; }
+        public string DemanderId { get; set; }
 
         /// <summary>
-        /// 用户名
-        /// </summary>
-        public string UserName { get; set; }
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// 权限名称
-        /// </summary>
-        public string Role { get; set; }
-
-        /// <summary>
-        /// 电话
-        /// </summary>
-        public string Telephone { get; set; }
-
-        /// <summary>
-        /// 身份证
-        /// </summary>
-        public string IdCard { get; set; }
-
-        /// <summary>
-        /// 单位名称
+        /// 需求方企业名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 年龄
+        /// 需求方企业地址
         /// </summary>
-        public string Age { get; set; }
+        public string CompanyAddress { get; set; }
 
         /// <summary>
-        /// 性别
+        /// 邮政编号1
         /// </summary>
-        public string Sex { get; set; }
+        public string PostCode1 { get; set; }
 
         /// <summary>
-        /// 邮箱
+        /// 邮政编号2
         /// </summary>
-        public string Email { get; set; }
+        public string PostCode2 { get; set; }
+
+        /// <summary>
+        /// 企业网址
+        /// </summary>
+        public string Website { get; set; }
+
+        /// <summary>
+        /// 企业性质
+        /// </summary>
+        public string NatureEnterprise { get; set; }
+
+        /// <summary>
+        /// 联系电话
+        /// </summary>
+        public string Tel { get; set; }
+
+        /// <summary>
+        /// 传真
+        /// </summary>
+        public string Fax { get; set; }
 
         /// <summary>
         /// 删除标记

@@ -15,12 +15,12 @@ using System.Web.Http;
 namespace IWS_Webapi.Controllers
 {
     /// <summary>
-    /// 用户Controller
+    /// 审批Controller
     /// </summary>
-    public class UserController : ApiController
+    public class ApprovalController : ApiController
     {
         /// <summary>
-        /// 用户数据查询
+        /// 审批数据查询
         /// </summary>
         /// <returns></returns>
         public HttpResponseMessage GetUserData()

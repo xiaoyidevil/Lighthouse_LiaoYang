@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IWS_Business.Interface
+namespace IWS_Dao.DaoIF
 {
     /// <summary>
-    /// 业务层接口类
+    /// Dao层公开接口
     /// </summary>
-    public interface InterfaceBusiness<T>
+    public interface InterfaceDao<T>
     {
         /// <summary>
         /// 数据查询
@@ -43,5 +43,13 @@ namespace IWS_Business.Interface
         /// <param name="lstData">数据集合（可缺省）</param>
         /// <returns></returns>
         int DeleteData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<T> lstData = null);
+
+        /// <summary>
+        /// 查询总数据条数
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="dicCondition"></param>
+        /// <returns></returns>
+        int SelectDataCnt(MySqlConnection conn, Dictionary<string, string> dicCondition);
     }
 }

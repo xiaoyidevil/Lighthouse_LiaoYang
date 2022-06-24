@@ -7,59 +7,64 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 用户表数据模型
+    /// 入场登记表数据模型
     /// </summary>
-    public class m_user
+    public class t_registration
     {
         /// <summary>
         /// 用户ID
         /// </summary>
-        public string UserId { get; set; }
+        public int? Id { get; set; }
 
         /// <summary>
-        /// 用户名
+        /// 公司编号
         /// </summary>
-        public string UserName { get; set; }
+        public string CompanyId { get; set; }
 
         /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// 权限名称
-        /// </summary>
-        public string Role { get; set; }
-
-        /// <summary>
-        /// 电话
-        /// </summary>
-        public string Telephone { get; set; }
-
-        /// <summary>
-        /// 身份证
-        /// </summary>
-        public string IdCard { get; set; }
-
-        /// <summary>
-        /// 单位名称
+        /// 公司名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 年龄
+        /// 人员编号
         /// </summary>
-        public string Age { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
-        /// 性别
+        /// 人员名称
         /// </summary>
-        public string Sex { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
-        /// 邮箱
+        /// 车牌号
         /// </summary>
-        public string Email { get; set; }
+        public string VehicleNumber { get; set; }
+
+        /// <summary>
+        /// 入场大门
+        /// </summary>
+        public string EntranceGate { get; set; }
+
+        /// <summary>
+        /// 入场日期
+        /// </summary>
+        public string EntranceDate { get; set; }
+
+        /// <summary>
+        /// 入场时段
+        /// </summary>
+        public string EntranceTime { get; set; }
+
+        /// <summary>
+        /// 监工单位
+        /// </summary>
+        public string Overseer { get; set; }
+
+        /// <summary>
+        /// 入场事由
+        /// </summary>
+        public string Reason { get; set; }
 
         /// <summary>
         /// 删除标记

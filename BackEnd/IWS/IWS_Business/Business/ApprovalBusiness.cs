@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace IWS_Business.Business
 {
     /// <summary>
-    /// 用户数据模型操作类
+    /// 审批数据模型操作类
     /// </summary>
-    public class UserBusiness : InterfaceBusiness<m_user>
+    public class ApprovalBusiness : InterfaceBusiness<t_approval>
     {
         /// <summary>
         /// 数据删除
@@ -22,14 +22,14 @@ namespace IWS_Business.Business
         /// <param name="dicCondition">条件集合</param>
         /// <param name="lstData">数据集合（可缺省）</param>
         /// <returns></returns>
-        public int DeleteData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<m_user> lstData = null)
+        public int DeleteData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<t_approval> lstData = null)
         {
             int intReturnValue;
             try
             {
                 // 用户模型Dao层对象
-                InterfaceDao<m_user> userDao = new UserDao();
-                intReturnValue = userDao.DeleteData(conn, dicCondition);
+                InterfaceDao<t_approval> approvalDao = new ApprovalDao();
+                intReturnValue = approvalDao.DeleteData(conn, dicCondition);
             }
             catch (Exception ex)
             {
@@ -44,14 +44,14 @@ namespace IWS_Business.Business
         /// <param name="dicCondition">条件集合</param>
         /// <param name="lstData">数据集合（可缺省）</param>
         /// <returns></returns>
-        public int InsertData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<m_user> lstData = null)
+        public int InsertData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<t_approval> lstData = null)
         {
             int intReturnValue;
             try
             {
                 // 用户模型Dao层对象
-                InterfaceDao<m_user> userDao = new UserDao();
-                intReturnValue = userDao.InsertData(conn, dicCondition, lstData);
+                InterfaceDao<t_approval> approvalDao = new ApprovalDao();
+                intReturnValue = approvalDao.InsertData(conn, dicCondition, lstData);
             }
             catch (Exception ex)
             {
@@ -66,14 +66,14 @@ namespace IWS_Business.Business
         /// <param name="dicCondition">条件集合</param>
         /// <param name="lstData">数据集合（可缺省）</param>
         /// <returns></returns>
-        public List<m_user> SelectData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<m_user> lstData = null)
+        public List<t_approval> SelectData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<t_approval> lstData = null)
         {
-            List<m_user> rtnData = null;
+            List<t_approval> rtnData = null;
             try
             {
                 // 用户模型Dao层对象
-                InterfaceDao<m_user> userDao = new UserDao();
-                rtnData = userDao.SelectData(conn, dicCondition);
+                InterfaceDao<t_approval> approvalDao = new ApprovalDao();
+                rtnData = approvalDao.SelectData(conn, dicCondition);
             }
             catch (Exception ex)
             {
@@ -94,8 +94,8 @@ namespace IWS_Business.Business
             try
             {
                 // 用户模型Dao层对象
-                InterfaceDao<m_user> userDao = new UserDao();
-                intReturnValue = userDao.SelectDataCnt(conn, dicCondition);
+                InterfaceDao<t_approval> approvalDao = new ApprovalDao();
+                intReturnValue = approvalDao.SelectDataCnt(conn, dicCondition);
             }
             catch (Exception ex)
             {
@@ -110,14 +110,14 @@ namespace IWS_Business.Business
         /// <param name="dicCondition">条件集合</param>
         /// <param name="lstData">数据集合（可缺省）</param>
         /// <returns></returns>
-        public int UpdateData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<m_user> lstData = null)
+        public int UpdateData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<t_approval> lstData = null)
         {
             int intReturnValue;
             try
             {
                 // 用户模型Dao层对象
-                InterfaceDao<m_user> userDao = new UserDao();
-                intReturnValue = userDao.UpdateData(conn, dicCondition);
+                InterfaceDao<t_approval> approvalDao = new ApprovalDao();
+                intReturnValue = approvalDao.UpdateData(conn, dicCondition);
             }
             catch (Exception ex)
             {
