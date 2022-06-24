@@ -149,6 +149,7 @@ CREATE TABLE `m_user`  (
   `Age` varchar(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '年龄',
   `Sex` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '性别',
   `Email` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `IsDelete` tinyint  NULL COMMENT '物理删除标志',
   `CreateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `CreateTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `UpdateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
@@ -160,7 +161,8 @@ CREATE TABLE `m_user`  (
 -- ----------------------------
 -- Records of m_user
 -- ----------------------------
-INSERT INTO `m_user` VALUES ('10001', '张鹏宇', '12345', '1', '13610840161', '21021319830514301x', '无业', '39', '男', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `m_user` 
+VALUES ('10001', '张鹏宇', '12345', '1', '13610840161', '21021319830514301x', '无业', '39', '男', 'test@163.com',0 , 'SYSTEM', NOW(), 'SYSTEM', NOW(), NULL);
 
 -- ----------------------------
 -- Table structure for m_vehicle
