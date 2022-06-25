@@ -12,6 +12,10 @@ namespace IWS_Common.Model
     public class m_jurisdiction
     {
         /// <summary>
+        /// 权限Key,界面显示用
+        /// </summary>
+        public string JurisdictionKey { get; set; }
+        /// <summary>
         /// 权限ID
         /// </summary>
         public int? JurisdictionId { get; set; }
