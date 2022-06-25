@@ -1,4 +1,4 @@
-﻿using IWS_Common.Const;
+using IWS_Common.Const;
 using IWS_Common.Model;
 using IWS_Dao.DaoIF;
 using MySql.Data.MySqlClient;
@@ -87,6 +87,7 @@ namespace IWS_Dao.Dao
                     {
                         lstVehicle.Add(new m_vehicle()
                         {
+                            VehicleId = GetDBValueToString(read["VehicleId"]),
                             VehicleNumber = GetDBValueToString(read["VehicleNumber"]),
                             CompanyName = GetDBValueToString(read["CompanyName"]),
                             BrandModel = GetDBValueToString(read["BrandModel"]),
