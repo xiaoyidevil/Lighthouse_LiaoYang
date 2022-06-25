@@ -12,6 +12,10 @@ namespace IWS_Common.Model
     public class m_vehicle
     {
         /// <summary>
+        /// 车辆ID，自增
+        /// </summary>
+        public string VehicleId { get; set; }
+        /// <summary>
         /// 车牌号码
         /// </summary>
         public string VehicleNumber { get; set; }
