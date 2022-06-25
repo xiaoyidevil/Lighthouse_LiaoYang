@@ -1,4 +1,4 @@
-﻿using IWS_Business.Business;
+using IWS_Business.Business;
 using IWS_Business.BusinessIF;
 using IWS_Common.Const;
 using IWS_Common.Model;
@@ -74,6 +74,8 @@ namespace IWS_Webapi.Controllers
                 // Json数据序列化
                 lstJurisdiction = jurisdictionBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
                 model.Data = lstJurisdiction;
+                List<m_jurisdiction_Cascading> lst_m_Jurisdiction_Cascading = GetJurisdiction_Cascading(lstJurisdiction);
+                model.Data = lst_m_Jurisdiction_Cascading;
                 model.TotalDataCount = jurisdictionBusiness.SelectDataCnt(DbHelper.GetMysqlConnection(), dicCondition);
                 model.CurrentPage = currentPage;
                 model.TotalPageCnt = AppCommon.GetTotalPageCnt(pageCnt, model.TotalDataCount);
@@ -94,5 +96,26 @@ namespace IWS_Webapi.Controllers
                 Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
             };
         }
+
+        protected List<m_jurisdiction_Cascading> GetJurisdiction_Cascading(List<m_jurisdiction> lst_m_jurisdiction) {
+            List<m_jurisdiction_Cascading> lst_m_Jurisdiction_Cascading = new List<m_jurisdiction_Cascading>();
+
+            foreach (var item in lst_m_jurisdiction.Select(p => p.JurisdictionLevel).ToList().Distinct()) //获取权限层级：JurisdictionLevel
+            {
+                foreach (m_jurisdiction var_m_jurisdiction in lst_m_jurisdiction.FindAll(p=>p.JurisdictionLevel == item)) //根据权限层级生成新的权限list
+                {
+                    m_jurisdiction_Cascading tmp_m_jurisdiction_Cascading = new m_jurisdiction_Cascading();
+                    tmp_m_jurisdiction_Cascading.JurisdictionInfo = var_m_jurisdiction;
+
+                    tmp_m_jurisdiction_Cascading.SubJurisdiction = lst_m_jurisdiction.FindAll(p => p.JurisdictionLevel == item + 1 && p.ParentID == var_m_jurisdiction.JurisdictionId);
+
+                    lst_m_Jurisdiction_Cascading.Add(tmp_m_jurisdiction_Cascading);
+                }
+                
+            }
+
+            return lst_m_Jurisdiction_Cascading;
+        }
+
     }
 }
