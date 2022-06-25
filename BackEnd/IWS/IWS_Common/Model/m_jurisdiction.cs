@@ -65,4 +65,13 @@ namespace IWS_Common.Model
         /// </summary>
         public DateTime? UpdateTime { get; set; }
     }
+    
+    
+    public class m_jurisdiction_Cascading {
+
+        public m_jurisdiction JurisdictionInfo = new m_jurisdiction();
+        public List<m_jurisdiction> SubJurisdiction = new List<m_jurisdiction>();
+
+    }
+
 }
