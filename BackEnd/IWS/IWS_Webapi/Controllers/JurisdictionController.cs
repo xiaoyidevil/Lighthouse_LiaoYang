@@ -32,9 +32,11 @@ namespace IWS_Webapi.Controllers
             string rtnJson = string.Empty;                                         // 返回用Json字符串
             int startIndex = 0;                                                    // 数据条数开始索引
 
+            int roleId = 0;
             int currentPage = 0;
             int pageCnt = 1;
             string strCurrentPage;
+            string strRoleId;
             string strPageCnt;
             string jurisdictionId;
             string jurisdictionLevel;
@@ -43,15 +45,18 @@ namespace IWS_Webapi.Controllers
 
             List<KeyValuePair<string, string>> requestList = Request.GetQueryNameValuePairs().ToList();
 
-            strCurrentPage = requestList.Exists(s => s.Key == "currentPage") ? requestList.First(s => s.Key == "currentPage").Value : "";
-            strPageCnt = requestList.Exists(s => s.Key == "pageCnt") ? requestList.First(s => s.Key == "pageCnt").Value : "";
-            jurisdictionId = requestList.Exists(s => s.Key == "jurisdictionId") ? requestList.First(s => s.Key == "jurisdictionId").Value : "";
-            jurisdictionLevel = requestList.Exists(s => s.Key == "jurisdictionLevel") ? requestList.First(s => s.Key == "jurisdictionLevel").Value : "";
-            jurisdictionName = requestList.Exists(s => s.Key == "jurisdictionName") ? requestList.First(s => s.Key == "jurisdictionName").Value : "";
-            jurisdictionPath = requestList.Exists(s => s.Key == "jurisdictionPath") ? requestList.First(s => s.Key == "jurisdictionPath").Value : "";
+            strRoleId = requestList.Exists(s => s.Key.ToLower() == "roleid") ? requestList.First(s => s.Key.ToLower() == "roleid").Value : "";
+            strCurrentPage = requestList.Exists(s => s.Key.ToLower() == "currentpage") ? requestList.First(s => s.Key.ToLower() == "currentpage").Value : "";
+            strPageCnt = requestList.Exists(s => s.Key.ToLower() == "pagecnt") ? requestList.First(s => s.Key.ToLower() == "pagecnt").Value : "";
+            jurisdictionId = requestList.Exists(s => s.Key.ToLower() == "jurisdictionid") ? requestList.First(s => s.Key.ToLower() == "jurisdictionid").Value : "";
+            jurisdictionLevel = requestList.Exists(s => s.Key.ToLower() == "jurisdictionlevel") ? requestList.First(s => s.Key.ToLower() == "jurisdictionlevel").Value : "";
+            jurisdictionName = requestList.Exists(s => s.Key.ToLower() == "jurisdictionname") ? requestList.First(s => s.Key.ToLower() == "jurisdictionname").Value : "";
+            jurisdictionPath = requestList.Exists(s => s.Key.ToLower() == "jurisdictionpath") ? requestList.First(s => s.Key.ToLower() == "jurisdictionpath").Value : "";
 
             int.TryParse(strCurrentPage, out currentPage);
             int.TryParse(strPageCnt, out pageCnt);
+            int.TryParse(strRoleId, out roleId);
+
             currentPage = currentPage == 0 ? 1 : currentPage;
             pageCnt = pageCnt == 0 ? 10 : pageCnt;
 
@@ -69,7 +74,8 @@ namespace IWS_Webapi.Controllers
 
                 // 条件编辑
                 startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetJurisdictionCondition(startIndex, pageCnt, jurisdictionId, jurisdictionLevel, jurisdictionName, jurisdictionPath);
+                //dicCondition = AppCommon.GetJurisdictionCondition(startIndex, pageCnt, jurisdictionId, jurisdictionLevel, jurisdictionName, jurisdictionPath);
+                dicCondition = AppCommon.GetJurisdictionCondition(roleId);
 
                 // Json数据序列化
                 lstJurisdiction = jurisdictionBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
@@ -100,18 +106,21 @@ namespace IWS_Webapi.Controllers
         protected List<m_jurisdiction_Cascading> GetJurisdiction_Cascading(List<m_jurisdiction> lst_m_jurisdiction) {
             List<m_jurisdiction_Cascading> lst_m_Jurisdiction_Cascading = new List<m_jurisdiction_Cascading>();
 
-            foreach (var item in lst_m_jurisdiction.Select(p => p.JurisdictionLevel).ToList().Distinct()) //获取权限层级：JurisdictionLevel
+            //foreach (var item in (from u in lst_m_jurisdiction orderby u.JurisdictionLevel descending select (u.JurisdictionLevel)).Distinct() ) //获取权限层级：JurisdictionLevel
+            //foreach (var item in lst_m_jurisdiction.Select(p => p.JurisdictionLevel).ToList().Distinct()) //获取权限层级：JurisdictionLevel
+
+            foreach (m_jurisdiction var_m_jurisdiction in lst_m_jurisdiction.FindAll(p => p.JurisdictionLevel == 1)) //根据权限层级生成新的权限list
             {
-                foreach (m_jurisdiction var_m_jurisdiction in lst_m_jurisdiction.FindAll(p=>p.JurisdictionLevel == item)) //根据权限层级生成新的权限list
-                {
-                    m_jurisdiction_Cascading tmp_m_jurisdiction_Cascading = new m_jurisdiction_Cascading();
-                    tmp_m_jurisdiction_Cascading.JurisdictionInfo = var_m_jurisdiction;
+                m_jurisdiction_Cascading tmp_m_jurisdiction_Cascading = new m_jurisdiction_Cascading();
+                tmp_m_jurisdiction_Cascading.JurisdictionId = var_m_jurisdiction.JurisdictionId;
+                tmp_m_jurisdiction_Cascading.JurisdictionLevel = var_m_jurisdiction.JurisdictionLevel;
+                tmp_m_jurisdiction_Cascading.ParentID = var_m_jurisdiction.ParentID;
+                tmp_m_jurisdiction_Cascading.JurisdictionName = var_m_jurisdiction.JurisdictionName;
+                tmp_m_jurisdiction_Cascading.JurisdictionPath = var_m_jurisdiction.JurisdictionPath;
 
-                    tmp_m_jurisdiction_Cascading.SubJurisdiction = lst_m_jurisdiction.FindAll(p => p.JurisdictionLevel == item + 1 && p.ParentID == var_m_jurisdiction.JurisdictionId);
+                tmp_m_jurisdiction_Cascading.SubJurisdiction = lst_m_jurisdiction.FindAll(p => p.JurisdictionLevel == 2 && p.ParentID == var_m_jurisdiction.JurisdictionId);
 
-                    lst_m_Jurisdiction_Cascading.Add(tmp_m_jurisdiction_Cascading);
-                }
-                
+                lst_m_Jurisdiction_Cascading.Add(tmp_m_jurisdiction_Cascading);
             }
 
             return lst_m_Jurisdiction_Cascading;
