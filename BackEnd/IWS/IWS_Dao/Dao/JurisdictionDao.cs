@@ -1,4 +1,4 @@
-﻿using IWS_Common.Const;
+using IWS_Common.Const;
 using IWS_Common.Model;
 using IWS_Dao.DaoIF;
 using MySql.Data.MySqlClient;
@@ -353,12 +353,20 @@ namespace IWS_Dao.Dao
         public override string CreateSelectSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" select * from m_jurisdiction ");
+            //sb.Append(" select * from m_jurisdiction ");
+            sb.AppendLine(" select j.* from m_role r ");
+            sb.AppendLine(" inner join m_role_jurisdiction rj ");
+            sb.AppendLine(" on r.RoleId = rj.RoleId ");
+            sb.AppendLine(" inner join m_jurisdiction j ");
+            sb.AppendLine(" on j.JurisdictionId = rj.JurisdictionId and j.JurisdictionLevel = rj.JurisdictionLevel ");
+            sb.AppendLine(" where 1 = 1");
 
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
+
+            if (dicCondition != null)
             {
-                // foreach value sb.Append(Condition Value)
+                sb.Append(dicCondition["roleid"]);
             }
             return sb.ToString();
         }
