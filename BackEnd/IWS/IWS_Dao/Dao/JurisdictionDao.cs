@@ -364,7 +364,7 @@ namespace IWS_Dao.Dao
             sb.AppendLine(" where 1 = 1");
 
 
-            if (dicCondition != null)
+            if (dicCondition.Keys.Count > 0)
             {
                 sb.Append(dicCondition["roleid"]);
             }
