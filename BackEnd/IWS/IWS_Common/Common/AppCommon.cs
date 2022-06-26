@@ -1,4 +1,4 @@
-﻿using IWS_Common.Const;
+using IWS_Common.Const;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,18 +198,20 @@ namespace IWS_Common.Common
         /// <param name="jurisdictionName">权限名称</param>
         /// <param name="jurisdictionPath">权限路径</param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetJurisdictionCondition(int startIndex, int pageCnt, string jurisdictionId, string jurisdictionLevel, string jurisdictionName, string jurisdictionPath)
+        //public static Dictionary<string, string> GetJurisdictionCondition(int startIndex, int pageCnt, string jurisdictionId, string jurisdictionLevel, string jurisdictionName, string jurisdictionPath)
+        public static Dictionary<string, string> GetJurisdictionCondition(int roleId)
         {
             Dictionary<string, string> rtnCondition = new Dictionary<string, string>();
             int conditionCnt = 0;
 
             // 条件编辑
-            if (!string.IsNullOrEmpty(jurisdictionId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionId = '" + jurisdictionId + "' "); }
-            if (!string.IsNullOrEmpty(jurisdictionLevel)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionLevel = '" + jurisdictionLevel + "' "); }
-            if (!string.IsNullOrEmpty(jurisdictionName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionName like '%" + jurisdictionName + "%' "); }
-            if (!string.IsNullOrEmpty(jurisdictionPath)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionPath = '" + jurisdictionPath + "' "); }            
-            rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + startIndex + ", " + pageCnt);
-
+            //if (!string.IsNullOrEmpty(jurisdictionId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionId = '" + jurisdictionId + "' "); }
+            //if (!string.IsNullOrEmpty(jurisdictionLevel)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionLevel = '" + jurisdictionLevel + "' "); }
+            //if (!string.IsNullOrEmpty(jurisdictionName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionName like '%" + jurisdictionName + "%' "); }
+            //if (!string.IsNullOrEmpty(jurisdictionPath)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionPath = '" + jurisdictionPath + "' "); }            
+            //if (!string.IsNullOrEmpty(jurisdictionPath)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and jurisdictionPath = '" + jurisdictionPath + "' "); }            
+            //rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + startIndex + ", " + pageCnt);
+            if (roleId != 0) { conditionCnt++; rtnCondition.Add("roleid", " and r.RoleId = " + roleId ); }
             return rtnCondition;
         }
         #endregion
