@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +11,15 @@ namespace IWS_Common.Model
     /// </summary>
     public class m_jurisdiction
     {
+
         /// <summary>
         /// 权限Key,界面显示用
         /// </summary>
-        public string JurisdictionKey { get; set; }
+        public string JurisdictionKey
+        {
+            get { return JurisdictionLevel.ToString() + "-" + ParentID.ToString() + "-" + JurisdictionId.ToString(); }
+            set { }
+        }
         /// <summary>
         /// 权限ID
         /// </summary>
@@ -38,7 +43,12 @@ namespace IWS_Common.Model
         /// <summary>
         /// 权限路径
         /// </summary>
-        public string JurisdictionPath { get; set; }        
+        public string JurisdictionPath { get; set; }
+
+        /// <summary>
+        /// 图标id
+        /// </summary>
+        public int? Icon { get; set; }
 
         /// <summary>
         /// 删除标记
@@ -65,11 +75,42 @@ namespace IWS_Common.Model
         /// </summary>
         public DateTime? UpdateTime { get; set; }
     }
-    
-    
-    public class m_jurisdiction_Cascading {
 
-        public m_jurisdiction JurisdictionInfo = new m_jurisdiction();
+    public class m_jurisdiction_Cascading {
+        /// <summary>
+        /// 权限Key,界面显示用
+        /// </summary>
+        public string JurisdictionKey
+        {
+            get { return JurisdictionLevel.ToString() + "-" + ParentID.ToString() + "-" + JurisdictionId.ToString(); }
+            set { }
+        }
+
+        /// <summary>
+        /// 权限ID
+        /// </summary>
+        public int? JurisdictionId { get; set; }
+
+        /// <summary>
+        /// 权限层级
+        /// </summary>
+        public int? JurisdictionLevel { get; set; }
+
+        /// <summary>
+        /// 父级权限ID
+        /// </summary>
+        public int? ParentID { get; set; }
+
+        /// <summary>
+        /// 权限名称
+        /// </summary>
+        public string JurisdictionName { get; set; }
+
+        /// <summary>
+        /// 权限路径
+        /// </summary>
+        public string JurisdictionPath { get; set; }
+
         public List<m_jurisdiction> SubJurisdiction = new List<m_jurisdiction>();
 
     }
