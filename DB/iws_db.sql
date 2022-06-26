@@ -50,6 +50,7 @@ CREATE TABLE `m_jurisdiction`  (
   `ParentID` int(0) NOT NULL COMMENT '父级权限ID',
   `JurisdictionName` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限名称',
   `JurisdictionPath` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限路径',
+  `Icon` TINYINT NULL DEFAULT 0 COMMENT '图标',
   `CreateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
   `CreateTime` TIMESTAMP COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NOW(),
   `UpdateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
@@ -91,7 +92,7 @@ INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `P
 INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('18', '2', '4', '设备控制', '');
 INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('19', '2', '4', '人脸信息审核', '');
 INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('20', '2', '4', '人脸信息导入', '');
-INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('21', '2', '4', '人脸信息导入', '');
+INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('21', '2', '4', '人脸信息维护', '');
 INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('22', '2', '4', '黑名单设置', '');
 INSERT INTO `iws_db`.`m_jurisdiction` (`JurisdictionId`, `JurisdictionLevel`, `ParentID`, `JurisdictionName`, `JurisdictionPath`) VALUES ('23', '2', '4', '报表查询，导出', '');
 
@@ -148,6 +149,45 @@ INSERT INTO `m_role`
 VALUES 
 (1, '部长', '负责公司日常业务');
 
+INSERT INTO `m_role` 
+(RoleId, RoleName, RoleDesc)
+VALUES 
+(2, '一般用户', '一般数据录入');
+
+-- ----------------------------
+-- Table structure for m_role_jurisdiction
+-- ----------------------------
+DROP TABLE IF EXISTS `m_role_jurisdiction`;
+CREATE TABLE `m_role_jurisdiction`  (
+  `RoleId` int(0) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `JurisdictionId` int(0) NOT NULL COMMENT '权限ID',
+  `JurisdictionLevel` int(0) NOT NULL COMMENT '权限ID',
+  `ParentID` int(0) NOT NULL COMMENT '父级权限ID',
+  `CreateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
+  `CreateTime`  TIMESTAMP COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NOW(),
+  `UpdateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
+  `UpdateTime`  TIMESTAMP COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NOW(),
+  `IsDelete` tinyint NULL DEFAULT 0 COMMENT '物理删除标志',
+  PRIMARY KEY (`RoleId`,`JurisdictionId`,`JurisdictionLevel`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色权限表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of m_role_jurisdiction
+-- ----------------------------
+-- 添加部长权限,所有权限
+insert into m_role_jurisdiction (RoleId, JurisdictionId, JurisdictionLevel, ParentID)
+select 1, JurisdictionId, JurisdictionLevel, ParentID
+from m_jurisdiction;
+
+-- 添加一般员工权限,入场申请权限
+insert into m_role_jurisdiction (RoleId, JurisdictionId, JurisdictionLevel, ParentID)
+select 2, JurisdictionId, JurisdictionLevel, ParentID
+from m_jurisdiction where jurisdictionlevel = 2 and ParentID = 2;
+
+insert into m_role_jurisdiction (RoleId, JurisdictionId, JurisdictionLevel, ParentID)
+select 2, JurisdictionId, JurisdictionLevel, ParentID
+from m_jurisdiction where jurisdictionlevel = 1 and JurisdictionId = 2;
+
 -- ----------------------------
 -- Table structure for m_supplier
 -- ----------------------------
@@ -179,7 +219,7 @@ CREATE TABLE `m_user`  (
   `UserId` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户账号',
   `UserName` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名称',
   `Password` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密码',
-  `Role` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色',
+  `RoleId` TINYINT NOT NULL COMMENT '角色',
   `Telephone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '电话',
   `IdCard` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '身份证',
   `CompanyName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '单位名称',
@@ -199,9 +239,9 @@ CREATE TABLE `m_user`  (
 -- Records of m_user
 -- ----------------------------
 INSERT INTO `m_user` 
-(UserId, UserName, Password, Role, Telephone, IdCard, CompanyName, Age, Sex, Email)
+(UserId, UserName, Password, RoleId, Telephone, IdCard, CompanyName, Age, Sex, Email)
 VALUES 
-('10001', '张鹏宇', '12345', '1', '13610840161', '21021319830514301x', '无业', '39', '男', 'test@163.com');
+('10001', '张鹏宇', '12345', 1, '13610840161', '21021319830514301x', '无业', '39', '男', 'test@163.com');
 
 -- ----------------------------
 -- Table structure for m_vehicle
