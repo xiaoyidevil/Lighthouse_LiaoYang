@@ -23,7 +23,7 @@ namespace IWS_Webapi.Controllers
         /// 权限数据查询
         /// </summary>
         /// <returns></returns>
-        public HttpResponseMessage GetUserData()
+        public HttpResponseMessage GET()
         {
             InterfaceBusiness<m_jurisdiction> jurisdictionBusiness;                // 业务层对象
             QueryModel model;                                                      // Json序列化对象
