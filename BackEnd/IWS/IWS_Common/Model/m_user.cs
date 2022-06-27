@@ -29,7 +29,7 @@ namespace IWS_Common.Model
         /// <summary>
         /// 权限ID
         /// </summary>
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         /// <summary>
         /// 电话
