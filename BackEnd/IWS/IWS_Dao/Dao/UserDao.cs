@@ -90,7 +90,7 @@ namespace IWS_Dao.Dao
                             UserId = GetDBValueToString(read["UserId"]),
                             UserName = GetDBValueToString(read["UserName"]),
                             Password = GetDBValueToString(read["Password"]),
-                            Role = GetDBValueToString(read["Role"]),
+                            RoleId = GetDBValueToInt(read["RoleId"]),
                             Telephone = GetDBValueToString(read["Telephone"]),
                             IdCard = GetDBValueToString(read["IdCard"]),
                             CompanyName = GetDBValueToString(read["CompanyName"]),
