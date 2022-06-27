@@ -27,9 +27,9 @@ namespace IWS_Common.Model
         public string Password { get; set; }
 
         /// <summary>
-        /// 权限名称
+        /// 权限ID
         /// </summary>
-        public string Role { get; set; }
+        public int RoleId { get; set; }
 
         /// <summary>
         /// 电话
