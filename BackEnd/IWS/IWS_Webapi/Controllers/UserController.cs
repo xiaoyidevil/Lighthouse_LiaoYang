@@ -1,4 +1,4 @@
-﻿using IWS_Business.Business;
+using IWS_Business.Business;
 using IWS_Business.BusinessIF;
 using IWS_Common.Const;
 using IWS_Common.Model;
@@ -23,7 +23,7 @@ namespace IWS_Webapi.Controllers
         /// 用户数据查询
         /// </summary>
         /// <returns></returns>
-        public HttpResponseMessage GetUserData()
+        public HttpResponseMessage GET()
         {
             InterfaceBusiness<m_user> userBusiness;                // 业务层对象
             QueryModel model;                                      // Json序列化对象
@@ -97,6 +97,60 @@ namespace IWS_Webapi.Controllers
             {
                 Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
             };
+        }
+
+        public HttpResponseMessage Post([FromBody] m_user entity){
+
+            InterfaceBusiness<m_user> userBusiness;                // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+
+            model = new QueryModel();
+            model.Data = entity;
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+
+        }
+
+        public HttpResponseMessage DELETE(string UserId)
+        {
+
+            InterfaceBusiness<m_user> userBusiness;                // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+
+            model = new QueryModel();
+            model.Data = UserId;
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+
+        }
+
+
+        public HttpResponseMessage PUT([FromBody] m_user entity)
+        {
+
+            InterfaceBusiness<m_user> userBusiness;                // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+
+            model = new QueryModel();
+            model.Data = entity;
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+
         }
     }
 }
