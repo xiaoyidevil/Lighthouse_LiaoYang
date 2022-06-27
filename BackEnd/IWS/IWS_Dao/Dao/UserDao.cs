@@ -1,4 +1,4 @@
-﻿using IWS_Common.Const;
+using IWS_Common.Const;
 using IWS_Common.Model;
 using IWS_Dao.DaoIF;
 using MySql.Data.MySqlClient;
@@ -194,7 +194,7 @@ namespace IWS_Dao.Dao
                         paras[0].Value = user.UserId;
                         paras[1].Value = user.UserName;
                         paras[2].Value = user.Password;
-                        paras[3].Value = user.Role;
+                        paras[3].Value = user.RoleId;
                         paras[4].Value = user.Telephone;
                         paras[5].Value = user.IdCard;
                         paras[6].Value = user.CompanyName;
@@ -260,7 +260,7 @@ namespace IWS_Dao.Dao
                         paras[0].Value = user.UserId;
                         paras[1].Value = user.UserName;
                         paras[2].Value = user.Password;
-                        paras[3].Value = user.Role;
+                        paras[3].Value = user.RoleId;
                         paras[4].Value = user.Telephone;
                         paras[5].Value = user.IdCard;
                         paras[6].Value = user.CompanyName;
@@ -406,7 +406,7 @@ namespace IWS_Dao.Dao
             sb.Append("         UserId, ");
             sb.Append("         UserName, ");
             sb.Append("         Password, ");
-            sb.Append("         Role, ");
+            sb.Append("         RoleId, ");
             sb.Append("         Telephone, ");
             sb.Append("         IdCard, ");
             sb.Append("         CompanyName, ");
@@ -425,7 +425,7 @@ namespace IWS_Dao.Dao
             sb.Append("         @UserId, ");
             sb.Append("         @UserName, ");
             sb.Append("         @Password, ");
-            sb.Append("         @Role, ");
+            sb.Append("         @RoleId, ");
             sb.Append("         @Telephone, ");
             sb.Append("         @IdCard, ");
             sb.Append("         @CompanyName, ");
@@ -464,7 +464,7 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@UserId",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UserName",MySqlDbType.VarChar,40),
                 new MySqlParameter("@Password",MySqlDbType.VarChar,20),
-                new MySqlParameter("@Role",MySqlDbType.VarChar,40),
+                new MySqlParameter("@RoleId",MySqlDbType.Int32,0),
                 new MySqlParameter("@Telephone",MySqlDbType.VarChar,20),
                 new MySqlParameter("@IdCard",MySqlDbType.VarChar,50),
                 new MySqlParameter("@CompanyName",MySqlDbType.VarChar,100),
