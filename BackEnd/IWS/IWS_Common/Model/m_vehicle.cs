@@ -14,7 +14,8 @@ namespace IWS_Common.Model
         /// <summary>
         /// 车辆ID，自增
         /// </summary>
-        public string VehicleId { get; set; }
+        public int? Id { get; set; }
+
         /// <summary>
         /// 车牌号码
         /// </summary>

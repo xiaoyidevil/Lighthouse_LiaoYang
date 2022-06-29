@@ -11,6 +11,8 @@ namespace IWS_Common.Model
     /// </summary>
     public class m_user
     {
+        public int? Id { get; set; }
+
         /// <summary>
         /// 用户ID
         /// </summary>

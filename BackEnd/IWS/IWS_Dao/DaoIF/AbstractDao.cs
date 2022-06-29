@@ -118,5 +118,35 @@ namespace IWS_Dao.DaoIF
             if (obj != null) return Convert.ToDateTime(obj.ToString());
             else return null;
         }
+
+        /// <summary>
+        /// 获取默认系统时间
+        /// </summary>
+        /// <param name="dt">时间</param>
+        /// <returns></returns>
+        public DateTime? GetDefualtDatetime(DateTime? dt)
+        {
+            return dt == null ? DateTime.Now : dt;
+        }
+
+        /// <summary>
+        /// 获取删除标记默认值
+        /// </summary>
+        /// <param name="flg">删除标记</param>
+        /// <returns></returns>
+        public int? GetDefualtDeleteFlg(int? flg)
+        {
+            return flg == null ? 0 : flg;
+        }
+
+        /// <summary>
+        /// 获取默认操作者
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public string GetDefualtUser(string user)
+        {
+            return string.IsNullOrEmpty(user) ? "SYSTEM" : user;
+        }
     }
 }

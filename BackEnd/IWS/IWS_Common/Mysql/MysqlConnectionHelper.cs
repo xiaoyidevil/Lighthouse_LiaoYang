@@ -33,6 +33,7 @@ namespace IWS_Common.Mysql
             _connectionString.Password = "root";
             _connectionString.Server = "127.0.0.1";
             _connectionString.Database = "iws_db";
+            _connectionString.AllowUserVariables = true;
             switch (platForm)
             {
                 case AppConst.Platform_Application:

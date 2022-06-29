@@ -117,7 +117,7 @@ namespace IWS_Business.Business
             {
                 // 用户模型Dao层对象
                 InterfaceDao<m_user> userDao = new UserDao();
-                intReturnValue = userDao.UpdateData(conn, dicCondition);
+                intReturnValue = userDao.UpdateData(conn, dicCondition, lstData);
             }
             catch (Exception ex)
             {

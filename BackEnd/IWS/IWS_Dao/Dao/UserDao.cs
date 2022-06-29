@@ -87,6 +87,7 @@ namespace IWS_Dao.Dao
                     {
                         lstUser.Add(new m_user()
                         {
+                            Id = GetDBValueToInt(read["Id"]),
                             UserId = GetDBValueToString(read["UserId"]),
                             UserName = GetDBValueToString(read["UserName"]),
                             Password = GetDBValueToString(read["Password"]),
@@ -133,7 +134,7 @@ namespace IWS_Dao.Dao
             MySqlTransaction tran = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -176,7 +177,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -201,14 +202,15 @@ namespace IWS_Dao.Dao
                         paras[7].Value = user.Age;
                         paras[8].Value = user.Sex;
                         paras[9].Value = user.Email;
-                        paras[10].Value = user.IsDelete;
-                        paras[11].Value = user.CreateUser;
-                        paras[12].Value = user.CreateTime;
-                        paras[13].Value = user.UpdateUser;
-                        paras[14].Value = user.UpdateTime;
+                        paras[10].Value = GetDefualtDeleteFlg(user.IsDelete);
+                        paras[11].Value = GetDefualtUser(user.CreateUser);
+                        paras[12].Value = GetDefualtDatetime(user.CreateTime);
+                        paras[13].Value = GetDefualtUser(user.UpdateUser);
+                        paras[14].Value = GetDefualtDatetime(user.UpdateTime);
                         paras[15].Value = user.Remark;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();                        
+                        intReturnValue += cmd.ExecuteNonQuery();
                     }
                 }
                 tran.Commit();
@@ -242,7 +244,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -267,12 +269,14 @@ namespace IWS_Dao.Dao
                         paras[7].Value = user.Age;
                         paras[8].Value = user.Sex;
                         paras[9].Value = user.Email;
-                        paras[10].Value = user.IsDelete;
-                        paras[11].Value = user.CreateUser;
-                        paras[12].Value = user.CreateTime;
-                        paras[13].Value = user.UpdateUser;
-                        paras[14].Value = user.UpdateTime;
+                        paras[10].Value = GetDefualtDeleteFlg(user.IsDelete);
+                        paras[11].Value = GetDefualtUser(user.CreateUser);
+                        paras[12].Value = GetDefualtDatetime(user.CreateTime);
+                        paras[13].Value = GetDefualtUser(user.UpdateUser);
+                        paras[14].Value = GetDefualtDatetime(user.UpdateTime);
                         paras[15].Value = user.Remark;
+                        paras[16].Value = user.Id;
+                        cmd.Parameters.AddRange(paras);
 
                         intReturnValue = cmd.ExecuteNonQuery();
                     }
@@ -307,12 +311,17 @@ namespace IWS_Dao.Dao
         public override string CreateDeleteSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" delete from m_user ");
-            //if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            //{
-            //    // foreach value sb.Append(Condition Value)
-            //}
+            sb.Append(" update m_user set IsDelete = 1 where IsDelete <> 1 ");
+            if (dicCondition != null)
+            {
+                foreach (string key in dicCondition.Keys)
+                {
+                    counter++;
+                    if (key.Equals(AppConst.Dictionary_Condition + counter)) sb.Append(dicCondition[AppConst.Dictionary_Condition + counter]);
+                }
+            }
             return sb.ToString();
         }
 
@@ -327,7 +336,7 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@UserId",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UserName",MySqlDbType.VarChar,40),
                 new MySqlParameter("@Password",MySqlDbType.VarChar,20),
-                new MySqlParameter("@Role",MySqlDbType.VarChar,40),
+                new MySqlParameter("@RoleId",MySqlDbType.Int32),
                 new MySqlParameter("@Telephone",MySqlDbType.VarChar,20),
                 new MySqlParameter("@IdCard",MySqlDbType.VarChar,50),
                 new MySqlParameter("@CompanyName",MySqlDbType.VarChar,100),
@@ -354,7 +363,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select * from m_user where 1=1 ");
+            sb.Append(" select * from m_user where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -378,7 +387,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select count(*) from m_user where 1=1 ");
+            sb.Append(" select count(*) from m_user where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -464,7 +473,7 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@UserId",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UserName",MySqlDbType.VarChar,40),
                 new MySqlParameter("@Password",MySqlDbType.VarChar,20),
-                new MySqlParameter("@RoleId",MySqlDbType.Int32,0),
+                new MySqlParameter("@RoleId",MySqlDbType.Int32),
                 new MySqlParameter("@Telephone",MySqlDbType.VarChar,20),
                 new MySqlParameter("@IdCard",MySqlDbType.VarChar,50),
                 new MySqlParameter("@CompanyName",MySqlDbType.VarChar,100),
@@ -476,7 +485,8 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@CreateTime",MySqlDbType.DateTime),
                 new MySqlParameter("@UpdateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UpdateTime",MySqlDbType.DateTime),
-                new MySqlParameter("@Remark",MySqlDbType.VarChar,500)
+                new MySqlParameter("@Remark",MySqlDbType.VarChar,500),
+                new MySqlParameter("@Id",MySqlDbType.Int32,0)
             };
             return paras;
         }
@@ -494,7 +504,7 @@ namespace IWS_Dao.Dao
             sb.Append("    set UserId = @UserId, ");
             sb.Append("        UserName = @UserName, ");
             sb.Append("        Password = @Password, ");
-            sb.Append("        Role = @Role, ");
+            sb.Append("        RoleId = @RoleId, ");
             sb.Append("        Telephone = @Telephone, ");
             sb.Append("        IdCard = @IdCard, ");
             sb.Append("        CompanyName = @CompanyName, ");
@@ -507,11 +517,7 @@ namespace IWS_Dao.Dao
             sb.Append("        UpdateUser = @UpdateUser, ");
             sb.Append("        UpdateTime = @UpdateTime, ");
             sb.Append("        Remark = @Remark ");
-
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            {
-                // foreach value sb.Append(Condition Value)
-            }
+            sb.Append(" where Id = @Id and IsDelete <> 1 ");
             return sb.ToString();
         }        
         #endregion

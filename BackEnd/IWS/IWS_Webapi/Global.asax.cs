@@ -22,10 +22,10 @@ namespace IWS_Webapi
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "*");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //    HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache");
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "*");
+            //    //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

@@ -20,7 +20,7 @@ namespace IWS_Webapi.Controllers
     public class SupplierController : ApiController
     {
         /// <summary>
-        /// 用户数据查询
+        /// 供应商数据查询
         /// </summary>
         /// <returns></returns>
         public HttpResponseMessage GetSupplierData()
@@ -30,40 +30,33 @@ namespace IWS_Webapi.Controllers
             List<m_supplier> lstSupplier;                          // 用户数据集合
             Dictionary<string, string> dicCondition;               // 条件集合
             string rtnJson = string.Empty;                         // 返回用Json字符串
-            int startIndex = 0;                                    // 数据条数开始索引
+            SupplierConditionModel conditionModel;                 // 条件模型
 
             int currentPage = 0;
             int pageCnt = 1;
             string strCurrentPage;
             string strPageCnt;
-            string supplierId;
-            string companyName;
-            string companyAddress;
-            string postCode1;
-            string postCode2;
-            string website;
-            string natureEnterprise;
-            string tel;
-            string fax;
 
             List<KeyValuePair<string, string>> requestList = Request.GetQueryNameValuePairs().ToList();
+            conditionModel = new SupplierConditionModel();
 
-            strCurrentPage = requestList.Exists(s => s.Key == "currentPage") ? requestList.First(s => s.Key == "currentPage").Value : "";
-            strPageCnt = requestList.Exists(s => s.Key == "pageCnt") ? requestList.First(s => s.Key == "pageCnt").Value : "";
-            supplierId = requestList.Exists(s => s.Key == "supplierId") ? requestList.First(s => s.Key == "supplierId").Value : "";
-            companyName = requestList.Exists(s => s.Key == "companyName") ? requestList.First(s => s.Key == "companyName").Value : "";
-            companyAddress = requestList.Exists(s => s.Key == "companyAddress") ? requestList.First(s => s.Key == "companyAddress").Value : "";
-            postCode1 = requestList.Exists(s => s.Key == "postCode1") ? requestList.First(s => s.Key == "postCode1").Value : "";
-            postCode2 = requestList.Exists(s => s.Key == "postCode2") ? requestList.First(s => s.Key == "postCode2").Value : "";
-            website = requestList.Exists(s => s.Key == "website") ? requestList.First(s => s.Key == "website").Value : "";
-            natureEnterprise = requestList.Exists(s => s.Key == "natureEnterprise") ? requestList.First(s => s.Key == "natureEnterprise").Value : "";
-            tel = requestList.Exists(s => s.Key == "tel") ? requestList.First(s => s.Key == "tel").Value : "";
-            fax = requestList.Exists(s => s.Key == "fax") ? requestList.First(s => s.Key == "fax").Value : "";
+            strCurrentPage = requestList.Exists(s => s.Key.ToLower() == "currentPage".ToLower()) ? requestList.First(s => s.Key.ToLower() == "currentPage".ToLower()).Value : "";
+            strPageCnt = requestList.Exists(s => s.Key.ToLower() == "pageCnt".ToLower()) ? requestList.First(s => s.Key.ToLower() == "pageCnt".ToLower()).Value : "";
+            conditionModel.SupplierId = requestList.Exists(s => s.Key.ToLower() == "supplierId".ToLower()) ? requestList.First(s => s.Key.ToLower() == "supplierId".ToLower()).Value : "";
+            conditionModel.CompanyName = requestList.Exists(s => s.Key.ToLower() == "companyName".ToLower()) ? requestList.First(s => s.Key.ToLower() == "companyName".ToLower()).Value : "";
+            conditionModel.CompanyAddress = requestList.Exists(s => s.Key.ToLower() == "companyAddress".ToLower()) ? requestList.First(s => s.Key.ToLower() == "companyAddress".ToLower()).Value : "";
+            conditionModel.PostCode1 = requestList.Exists(s => s.Key.ToLower() == "postCode1".ToLower()) ? requestList.First(s => s.Key.ToLower() == "postCode1".ToLower()).Value : "";
+            conditionModel.PostCode2 = requestList.Exists(s => s.Key.ToLower() == "postCode2".ToLower()) ? requestList.First(s => s.Key.ToLower() == "postCode2".ToLower()).Value : "";
+            conditionModel.Website = requestList.Exists(s => s.Key.ToLower() == "website".ToLower()) ? requestList.First(s => s.Key.ToLower() == "website".ToLower()).Value : "";
+            conditionModel.NatureEnterprise = requestList.Exists(s => s.Key.ToLower() == "natureEnterprise".ToLower()) ? requestList.First(s => s.Key.ToLower() == "natureEnterprise".ToLower()).Value : "";
+            conditionModel.Tel = requestList.Exists(s => s.Key.ToLower() == "tel".ToLower()) ? requestList.First(s => s.Key.ToLower() == "tel".ToLower()).Value : "";
+            conditionModel.Fax = requestList.Exists(s => s.Key.ToLower() == "fax".ToLower()) ? requestList.First(s => s.Key.ToLower() == "fax".ToLower()).Value : "";
 
             int.TryParse(strCurrentPage, out currentPage);
             int.TryParse(strPageCnt, out pageCnt);
             currentPage = currentPage == 0 ? 1 : currentPage;
             pageCnt = pageCnt == 0 ? 10 : pageCnt;
+            conditionModel.PageCnt = pageCnt;
 
             try
             {
@@ -78,8 +71,9 @@ namespace IWS_Webapi.Controllers
                 DbHelper.FirstCreateMysqlConnection();
 
                 // 条件编辑
-                startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetSupplierCondition(startIndex, pageCnt, supplierId, companyName, companyAddress, postCode1, postCode2, website, natureEnterprise, tel, fax);
+                conditionModel.StartIndex = (currentPage - 1) * pageCnt;
+                conditionModel.OprationKind = AppConst.Operation_Query;
+                dicCondition = AppCommon.GetSupplierCondition(conditionModel);
 
                 // Json数据序列化
                 lstSupplier = supplierBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
@@ -89,6 +83,160 @@ namespace IWS_Webapi.Controllers
                 model.TotalPageCnt = AppCommon.GetTotalPageCnt(pageCnt, model.TotalDataCount);
                 model.State = 1;
                 model.Msg = AppConst.Excute_Success;
+            }
+            catch (Exception ex)
+            {
+                model = new QueryModel();
+                model.State = 7;
+                model.Msg = ex.Message.ToString();
+            }
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
+
+        /// <summary>
+        /// 供应商数据插入
+        /// </summary>
+        /// <param name="entity">供应商数据</param>
+        /// <returns></returns>
+        public HttpResponseMessage Post([FromBody] m_supplier entity)
+        {
+
+            InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+            List<m_supplier> lstSupplier;                          // 供应商数据集合
+            int rtnValue = 0;                                      // 执行结果
+
+            try
+            {
+                // 对象实例化
+                supplierBusiness = new SupplierBusiness();
+                lstSupplier = new List<m_supplier>();
+                model = new QueryModel();
+
+                // 创建WebApi数据库连接
+                MysqlConnectionHelper DbHelper = new MysqlConnectionHelper(AppConst.Platform_Webapi);
+                DbHelper.FirstCreateMysqlConnection();
+
+                // 数据插入
+                lstSupplier.Add(entity);
+                rtnValue = supplierBusiness.InsertData(DbHelper.GetMysqlConnection(), null, lstSupplier);
+
+                if (rtnValue > 0)
+                {
+                    // Json数据序列化
+                    model.Data = lstSupplier;
+                    model.State = 1;
+                    model.Msg = AppConst.Excute_Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                model = new QueryModel();
+                model.State = 7;
+                model.Msg = ex.Message.ToString();
+            }
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
+
+        /// <summary>
+        /// 供应商数据删除
+        /// </summary>
+        /// <param name="SupplierId">供应商数据键</param>
+        /// <returns></returns>
+        public HttpResponseMessage Delete(string SupplierId)
+        {
+            InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+            Dictionary<string, string> dicCondition;               // 条件集合
+            SupplierConditionModel conditionModel;                 // 条件模型
+            int rtnValue = 0;                                      // 执行结果
+
+            try
+            {
+                // 对象实例化
+                conditionModel = new SupplierConditionModel();
+                supplierBusiness = new SupplierBusiness();
+                model = new QueryModel();
+
+                // 创建WebApi数据库连接
+                MysqlConnectionHelper DbHelper = new MysqlConnectionHelper(AppConst.Platform_Webapi);
+                DbHelper.FirstCreateMysqlConnection();
+
+                // 数据删除
+                conditionModel.OprationKind = AppConst.Operation_Delete;
+                conditionModel.SupplierId = SupplierId;
+                dicCondition = AppCommon.GetSupplierCondition(conditionModel);
+                rtnValue = supplierBusiness.DeleteData(DbHelper.GetMysqlConnection(), dicCondition);
+
+                if (rtnValue > 0)
+                {
+                    // Json数据序列化
+                    model.State = 1;
+                    model.Msg = AppConst.Excute_Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                model = new QueryModel();
+                model.State = 7;
+                model.Msg = ex.Message.ToString();
+            }
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
+
+        /// <summary>
+        /// 用户数据更新
+        /// </summary>
+        /// <param name="entity">用户数据</param>
+        /// <returns></returns>
+        public HttpResponseMessage Put([FromBody] m_supplier entity)
+        {
+
+            InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+            List<m_supplier> lstSupplier;                          // 供应商数据集合
+            int rtnValue = 0;                                      // 执行结果
+
+            try
+            {
+                // 对象实例化
+                supplierBusiness = new SupplierBusiness();
+                lstSupplier = new List<m_supplier>();
+                model = new QueryModel();
+
+                // 创建WebApi数据库连接
+                MysqlConnectionHelper DbHelper = new MysqlConnectionHelper(AppConst.Platform_Webapi);
+                DbHelper.FirstCreateMysqlConnection();
+
+                // 数据插入
+                lstSupplier.Add(entity);
+                rtnValue = supplierBusiness.UpdateData(DbHelper.GetMysqlConnection(), null, lstSupplier);
+
+                if (rtnValue > 0)
+                {
+                    // Json数据序列化
+                    model.Data = lstSupplier;
+                    model.State = 1;
+                    model.Msg = AppConst.Excute_Success;
+                }
             }
             catch (Exception ex)
             {

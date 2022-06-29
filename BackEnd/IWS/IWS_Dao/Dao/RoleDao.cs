@@ -89,9 +89,7 @@ namespace IWS_Dao.Dao
                         {
                             RoleId = GetDBValueToInt(read["RoleId"]),
                             RoleName = GetDBValueToString(read["RoleName"]),
-                            JurisdictionId = GetDBValueToString(read["JurisdictionId"]),
-                            DepartmentId = GetDBValueToString(read["DepartmentId"]),
-                            DepartmentName = GetDBValueToString(read["DepartmentName"]),
+                            JurisdictionId = GetDBValueToString(read["RoleDesc"]),
                             IsDelete = GetDBValueToInt(read["IsDelete"]),
                             CreateUser = GetDBValueToString(read["CreateUser"]),
                             CreateTime = GetDBValueToDateTime(read["CreateTime"]),

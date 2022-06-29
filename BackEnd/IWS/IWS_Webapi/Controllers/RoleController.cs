@@ -65,7 +65,7 @@ namespace IWS_Webapi.Controllers
 
                 // 条件编辑
                 startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetRoleCondition(startIndex, pageCnt, roleId, roleName);
+                //dicCondition = AppCommon.GetRoleCondition(startIndex, pageCnt, roleId, roleName);
 
                 // Json数据序列化
                 lstRole = roleBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();

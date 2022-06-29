@@ -73,7 +73,7 @@ namespace IWS_Webapi.Controllers
 
                 // 条件编辑
                 startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetUserCondition(startIndex, pageCnt, userId, userName, telephone, idCard, age, sex);
+                //dicCondition = AppCommon.GetUserCondition(startIndex, pageCnt, userId, userName, telephone, idCard, age, sex);
 
                 // Json数据序列化
                 lstUser = userBusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();

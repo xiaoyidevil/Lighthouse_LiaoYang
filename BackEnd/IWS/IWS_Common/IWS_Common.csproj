@@ -89,10 +89,14 @@
     <Compile Include="Model\m_demander.cs" />
     <Compile Include="Model\m_material.cs" />
     <Compile Include="Model\m_role.cs" />
+    <Compile Include="Model\RoleConditionModel.cs" />
     <Compile Include="Model\t_registration.cs" />
     <Compile Include="Model\t_approval.cs" />
     <Compile Include="Model\m_vehicle.cs" />
     <Compile Include="Model\m_user.cs" />
+    <Compile Include="Model\SupplierConditionModel.cs" />
+    <Compile Include="Model\VehicleConditionModel.cs" />
+    <Compile Include="Model\UserConditionModel.cs" />
     <Compile Include="Mysql\MysqlConnectionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

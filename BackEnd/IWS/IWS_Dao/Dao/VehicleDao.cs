@@ -87,7 +87,7 @@ namespace IWS_Dao.Dao
                     {
                         lstVehicle.Add(new m_vehicle()
                         {
-                            VehicleId = GetDBValueToString(read["VehicleId"]),
+                            Id = GetDBValueToInt(read["Id"]),
                             VehicleNumber = GetDBValueToString(read["VehicleNumber"]),
                             CompanyName = GetDBValueToString(read["CompanyName"]),
                             BrandModel = GetDBValueToString(read["BrandModel"]),

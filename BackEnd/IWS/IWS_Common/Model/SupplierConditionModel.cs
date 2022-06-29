@@ -7,24 +7,32 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 供货商数据模型
+    /// 供应商条件模型
     /// </summary>
-    public class m_supplier
+    public class SupplierConditionModel
     {
-        public int? Id { get; set; }
-
         /// <summary>
-        /// 需求方编号
+        /// 开始位置索引
         /// </summary>
-        public string SupplierId { get; set; }
+        public int StartIndex { get; set; }
 
         /// <summary>
-        /// 需求方企业名称
+        /// 每页显示条数
+        /// </summary>
+        public int PageCnt { get; set; }
+
+        /// <summary>
+        /// 供应商ID
+        /// </summary>
+        public string SupplierId;
+
+        /// <summary>
+        /// 供应商企业名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 需求方企业地址
+        /// 供应商企业地址
         /// </summary>
         public string CompanyAddress { get; set; }
 
@@ -49,7 +57,7 @@ namespace IWS_Common.Model
         public string NatureEnterprise { get; set; }
 
         /// <summary>
-        /// 联系电话
+        /// 电话
         /// </summary>
         public string Tel { get; set; }
 
@@ -59,33 +67,8 @@ namespace IWS_Common.Model
         public string Fax { get; set; }
 
         /// <summary>
-        /// 删除标记
+        /// 操作类型
         /// </summary>
-        public int? IsDelete { get; set; }
-
-        /// <summary>
-        /// 创建者
-        /// </summary>
-        public string CreateUser { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime? CreateTime { get; set; }
-
-        /// <summary>
-        /// 更新者
-        /// </summary>
-        public string UpdateUser { get; set; }
-
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-        public DateTime? UpdateTime { get; set; }
-
-        /// <summary>
-        /// 备注
-        /// </summary>
-        public string Remark { get; set; }
+        public string OprationKind { get; set; }
     }
 }

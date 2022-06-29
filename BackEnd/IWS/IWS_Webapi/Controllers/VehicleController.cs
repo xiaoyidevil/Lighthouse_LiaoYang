@@ -19,44 +19,36 @@ namespace IWS_Webapi.Controllers
         /// <summary>
         /// 车辆数据查询
         /// </summary>
-        /// <param name="currentPage">当前页码</param>
-        /// <param name="pageCnt">每页显示条数</param>
-        /// <param name="vehicleNumber">车牌号</param>
-        /// <param name="companyName">所属公司名称</param>
-        /// <param name="brandModel">品牌型号</param>
-        /// <param name="color">车身颜色</param>
         /// <returns></returns>
-        public HttpResponseMessage GetVehicleData()
+        public HttpResponseMessage Get()
         {
             InterfaceBusiness<m_vehicle> vehicleusiness;              // 业务层对象
             QueryModel model;                                         // Json序列化对象
             List<m_vehicle> lstVehicle;                               // 车辆数据集合
             Dictionary<string, string> dicCondition;                  // 条件集合
             string rtnJson = string.Empty;                            // 返回用Json字符串
-            int startIndex = 0;                                       // 数据条数开始索引
+            VehicleConditionModel conditionModel;                     // 条件模型
 
             int currentPage = 0;
             int pageCnt = 1;
             string strCurrentPage;
             string strPageCnt;
-            string vehicleNumber;
-            string companyName;
-            string brandModel;
-            string color;
 
             List<KeyValuePair<string, string>> requestList = Request.GetQueryNameValuePairs().ToList();
+            conditionModel = new VehicleConditionModel();
 
-            strCurrentPage = requestList.Exists(s => s.Key == "currentPage") ? requestList.First(s => s.Key == "currentPage").Value : "";
-            strPageCnt = requestList.Exists(s => s.Key == "pageCnt") ? requestList.First(s => s.Key == "pageCnt").Value : "";
-            vehicleNumber = requestList.Exists(s => s.Key == "vehicleNumber") ? requestList.First(s => s.Key == "vehicleNumber").Value : "";
-            companyName = requestList.Exists(s => s.Key == "companyName") ? requestList.First(s => s.Key == "companyName").Value : "";
-            brandModel = requestList.Exists(s => s.Key == "brandModel") ? requestList.First(s => s.Key == "brandModel").Value : "";
-            color = requestList.Exists(s => s.Key == "color") ? requestList.First(s => s.Key == "color").Value : "";
+            strCurrentPage = requestList.Exists(s => s.Key.ToLower() == "currentPage".ToLower()) ? requestList.First(s => s.Key.ToLower() == "currentPage".ToLower()).Value : "";
+            strPageCnt = requestList.Exists(s => s.Key.ToLower() == "pageCnt".ToLower()) ? requestList.First(s => s.Key.ToLower() == "pageCnt".ToLower()).Value : "";
+            conditionModel.VehicleNumber = requestList.Exists(s => s.Key.ToLower() == "vehicleNumber".ToLower()) ? requestList.First(s => s.Key.ToLower() == "vehicleNumber".ToLower()).Value : "";
+            conditionModel.CompanyName = requestList.Exists(s => s.Key.ToLower() == "companyName".ToLower()) ? requestList.First(s => s.Key.ToLower() == "companyName".ToLower()).Value : "";
+            conditionModel.BrandModel = requestList.Exists(s => s.Key.ToLower() == "brandModel".ToLower()) ? requestList.First(s => s.Key.ToLower() == "brandModel".ToLower()).Value : "";
+            conditionModel.Color = requestList.Exists(s => s.Key.ToLower() == "color".ToLower()) ? requestList.First(s => s.Key.ToLower() == "color".ToLower()).Value : "";
 
             int.TryParse(strCurrentPage, out currentPage);
             int.TryParse(strPageCnt, out pageCnt);
             currentPage = currentPage == 0 ? 1 : currentPage;
             pageCnt = pageCnt == 0 ? 10 : pageCnt;
+            conditionModel.PageCnt = pageCnt;
 
             try
             {
@@ -71,8 +63,9 @@ namespace IWS_Webapi.Controllers
                 DbHelper.FirstCreateMysqlConnection();
 
                 // 条件编辑
-                startIndex = (currentPage - 1) * pageCnt;
-                dicCondition = AppCommon.GetVehicleCondition(startIndex, pageCnt, vehicleNumber, companyName, brandModel, color);
+                conditionModel.StartIndex = (currentPage - 1) * pageCnt;
+                conditionModel.OprationKind = AppConst.Operation_Query;
+                dicCondition = AppCommon.GetVehicleCondition(conditionModel);
 
                 // Json数据序列化
                 lstVehicle = vehicleusiness.SelectData(DbHelper.GetMysqlConnection(), dicCondition).ToList();
@@ -82,6 +75,160 @@ namespace IWS_Webapi.Controllers
                 model.TotalPageCnt = AppCommon.GetTotalPageCnt(pageCnt, model.TotalDataCount);
                 model.State = 1;
                 model.Msg = AppConst.Excute_Success;
+            }
+            catch (Exception ex)
+            {
+                model = new QueryModel();
+                model.State = 7;
+                model.Msg = ex.Message.ToString();
+            }
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
+
+        /// <summary>
+        /// 车辆数据插入
+        /// </summary>
+        /// <param name="entity">用户数据</param>
+        /// <returns></returns>
+        public HttpResponseMessage Post([FromBody] m_vehicle entity)
+        {
+
+            InterfaceBusiness<m_vehicle> userBusiness;             // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+            List<m_vehicle> lstVehicle;                            // 车辆数据集合
+            int rtnValue = 0;                                      // 执行结果
+
+            try
+            {
+                // 对象实例化
+                userBusiness = new VehicleBusiness();
+                lstVehicle = new List<m_vehicle>();
+                model = new QueryModel();
+
+                // 创建WebApi数据库连接
+                MysqlConnectionHelper DbHelper = new MysqlConnectionHelper(AppConst.Platform_Webapi);
+                DbHelper.FirstCreateMysqlConnection();
+
+                // 数据插入
+                lstVehicle.Add(entity);
+                rtnValue = userBusiness.InsertData(DbHelper.GetMysqlConnection(), null, lstVehicle);
+
+                if (rtnValue > 0)
+                {
+                    // Json数据序列化
+                    model.Data = lstVehicle;
+                    model.State = 1;
+                    model.Msg = AppConst.Excute_Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                model = new QueryModel();
+                model.State = 7;
+                model.Msg = ex.Message.ToString();
+            }
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
+
+        /// <summary>
+        /// 车辆数据删除
+        /// </summary>
+        /// <param name="VehicleId">车辆数据键</param>
+        /// <returns></returns>
+        public HttpResponseMessage Delete(string VehicleId)
+        {
+            InterfaceBusiness<m_vehicle> vehicleBusiness;          // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+            Dictionary<string, string> dicCondition;               // 条件集合
+            VehicleConditionModel conditionModel;                  // 条件模型
+            int rtnValue = 0;                                      // 执行结果
+
+            try
+            {
+                // 对象实例化
+                conditionModel = new VehicleConditionModel();
+                vehicleBusiness = new VehicleBusiness();
+                model = new QueryModel();
+
+                // 创建WebApi数据库连接
+                MysqlConnectionHelper DbHelper = new MysqlConnectionHelper(AppConst.Platform_Webapi);
+                DbHelper.FirstCreateMysqlConnection();
+
+                // 数据删除
+                conditionModel.OprationKind = AppConst.Operation_Delete;
+                conditionModel.VehicleId = VehicleId;
+                dicCondition = AppCommon.GetVehicleCondition(conditionModel);
+                rtnValue = vehicleBusiness.DeleteData(DbHelper.GetMysqlConnection(), dicCondition);
+
+                if (rtnValue > 0)
+                {
+                    // Json数据序列化
+                    model.State = 1;
+                    model.Msg = AppConst.Excute_Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                model = new QueryModel();
+                model.State = 7;
+                model.Msg = ex.Message.ToString();
+            }
+
+            // Json序列化返回
+            string json = JsonConvert.SerializeObject(model);
+            return new HttpResponseMessage
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+            };
+        }
+
+        /// <summary>
+        /// 车辆数据更新
+        /// </summary>
+        /// <param name="entity">车辆数据</param>
+        /// <returns></returns>
+        public HttpResponseMessage Put([FromBody] m_vehicle entity)
+        {
+
+            InterfaceBusiness<m_vehicle> vehicleBusiness;          // 业务层对象
+            QueryModel model;                                      // Json序列化对象
+            List<m_vehicle> lstVehicle;                            // 用户数据集合
+            int rtnValue = 0;                                      // 执行结果
+
+            try
+            {
+                // 对象实例化
+                vehicleBusiness = new VehicleBusiness();
+                lstVehicle = new List<m_vehicle>();
+                model = new QueryModel();
+
+                // 创建WebApi数据库连接
+                MysqlConnectionHelper DbHelper = new MysqlConnectionHelper(AppConst.Platform_Webapi);
+                DbHelper.FirstCreateMysqlConnection();
+
+                // 数据插入
+                lstVehicle.Add(entity);
+                rtnValue = vehicleBusiness.UpdateData(DbHelper.GetMysqlConnection(), null, lstVehicle);
+
+                if (rtnValue > 0)
+                {
+                    // Json数据序列化
+                    model.Data = lstVehicle;
+                    model.State = 1;
+                    model.Msg = AppConst.Excute_Success;
+                }
             }
             catch (Exception ex)
             {

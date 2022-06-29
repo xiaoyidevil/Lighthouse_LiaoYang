@@ -188,6 +188,7 @@ namespace IWS_Dao.Dao
                     {
                         lstSupplier.Add(new m_supplier()
                         {
+                            Id = GetDBValueToInt(read["Id"]),
                             SupplierId = GetDBValueToString(read["SupplierId"]),
                             CompanyName = GetDBValueToString(read["CompanyName"]),
                             CompanyAddress = GetDBValueToString(read["CompanyAddress"]),
@@ -370,7 +371,7 @@ namespace IWS_Dao.Dao
 
             sb.Append(" insert into m_supplier ");
             sb.Append(" ( ");
-            sb.Append("         JurisdictionId, ");
+            sb.Append("         SupplierId, ");
             sb.Append("         CompanyName, ");
             sb.Append("         CompanyAddress, ");
             sb.Append("         PostCode1, ");
@@ -388,7 +389,7 @@ namespace IWS_Dao.Dao
             sb.Append(" ) ");
             sb.Append(" values ");
             sb.Append(" ( ");
-            sb.Append("         @JurisdictionId, ");
+            sb.Append("         @SupplierId, ");
             sb.Append("         @CompanyName, ");
             sb.Append("         @CompanyAddress, ");
             sb.Append("         @PostCode1, ");
@@ -445,7 +446,7 @@ namespace IWS_Dao.Dao
         {
             MySqlParameter[] paras = new MySqlParameter[]
             {
-                new MySqlParameter("@JurisdictionId",MySqlDbType.VarChar,10),
+                new MySqlParameter("@SupplierId",MySqlDbType.VarChar,10),
                 new MySqlParameter("@CompanyName",MySqlDbType.VarChar,100),
                 new MySqlParameter("@CompanyAddress",MySqlDbType.VarChar,250),
                 new MySqlParameter("@PostCode1",MySqlDbType.VarChar,10),
@@ -474,7 +475,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
 
             sb.Append(" update m_supplier ");
-            sb.Append("    set JurisdictionId = @JurisdictionId, ");
+            sb.Append("    set SupplierId = @SupplierId, ");
             sb.Append("        CompanyName = @CompanyName, ");
             sb.Append("        CompanyAddress = @CompanyAddress, ");
             sb.Append("        PostCode1 = @PostCode1, ");

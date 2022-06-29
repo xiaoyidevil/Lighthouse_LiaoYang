@@ -19,11 +19,19 @@ namespace IWS_Common.Const
         #region 条件字典区分
         public const string Dictionary_ConditionCnt = "ConditionCnt";           // 条件个数
         public const string Dictionary_Condition = "Condition";                 // 条件标记
-        public const string Dictionary_Condition_Limit = "Limit";      // 条件标记_Limit
+        public const string Dictionary_Condition_Limit = "Limit";               // 条件标记_Limit
+        #endregion
+
+        #region 条件区分
+        public const string Operation_Query = "Query";                          // 查询
+        public const string Operation_Insert = "Insert";                        // 插入
+        public const string Operation_Update = "Update";                        // 更新
+        public const string Operation_Delete = "Delete";                        // 删除
         #endregion
 
         #region 消息信息
         public const string Excute_Success = "执行成功";                        // 执行成功信息
+        public const string Excute_NoData = "没有数据被执行";                   // 没有数据被执行
         #endregion
     }
 }
