@@ -446,7 +446,7 @@ namespace IWS_Dao.Dao
             sb.Append("         @CreateTime, ");
             sb.Append("         @UpdateUser, ");
             sb.Append("         @UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         @Remark ");
             sb.Append(" ) ");
 
             return sb.ToString();

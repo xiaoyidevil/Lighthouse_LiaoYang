@@ -11,7 +11,7 @@ namespace IWS_Common.Model
     /// </summary>
     public class VehicleConditionModel
     {
-        public string VehicleId { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// 开始位置索引

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 供应商条件模型
+    /// 入场登记条件模型
     /// </summary>
-    public class SupplierConditionModel
+    public class RegistrationConditionModel
     {
         public string Id { get; set; }
 
@@ -24,49 +24,44 @@ namespace IWS_Common.Model
         public int PageCnt { get; set; }
 
         /// <summary>
-        /// 供应商ID
+        /// 公司编号
         /// </summary>
-        public string SupplierId;
+        public string CompanyId { get; set; }
 
         /// <summary>
-        /// 供应商企业名称
+        /// 公司名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 供应商企业地址
+        /// 人员编号
         /// </summary>
-        public string CompanyAddress { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
-        /// 邮政编号1
+        /// 人员名称
         /// </summary>
-        public string PostCode1 { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
-        /// 邮政编号2
+        /// 车牌号
         /// </summary>
-        public string PostCode2 { get; set; }
+        public string VehicleNumber { get; set; }
 
         /// <summary>
-        /// 企业网址
+        /// 入场大门
         /// </summary>
-        public string Website { get; set; }
+        public string EntranceGate { get; set; }
 
         /// <summary>
-        /// 企业性质
+        /// 监工单位
         /// </summary>
-        public string NatureEnterprise { get; set; }
+        public string Overseer { get; set; }
 
         /// <summary>
-        /// 电话
+        /// 入场事由
         /// </summary>
-        public string Tel { get; set; }
-
-        /// <summary>
-        /// 传真
-        /// </summary>
-        public string Fax { get; set; }
+        public string Reason { get; set; }
 
         /// <summary>
         /// 操作类型

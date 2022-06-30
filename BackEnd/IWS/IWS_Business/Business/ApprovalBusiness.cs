@@ -117,7 +117,7 @@ namespace IWS_Business.Business
             {
                 // 用户模型Dao层对象
                 InterfaceDao<t_approval> approvalDao = new ApprovalDao();
-                intReturnValue = approvalDao.UpdateData(conn, dicCondition);
+                intReturnValue = approvalDao.UpdateData(conn, dicCondition, lstData);
             }
             catch (Exception ex)
             {

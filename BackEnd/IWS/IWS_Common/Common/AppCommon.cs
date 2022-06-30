@@ -75,7 +75,7 @@ namespace IWS_Common.Common
                 case AppConst.Operation_Update:
                     break;
                 case AppConst.Operation_Delete:
-                    if (!string.IsNullOrEmpty(model.VehicleId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and VehicleId in (" + model.VehicleId + ") "); }
+                    if (!string.IsNullOrEmpty(model.Id)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Id in (" + model.Id + ") "); }
                     break;
             }
             return rtnCondition;
@@ -111,21 +111,52 @@ namespace IWS_Common.Common
                 case AppConst.Operation_Update:
                     break;
                 case AppConst.Operation_Delete:
-                    if (!string.IsNullOrEmpty(model.SupplierId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and SupplierId in (" + model.SupplierId + ") "); }
+                    if (!string.IsNullOrEmpty(model.Id)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Id in (" + model.Id + ") "); }
+                    break;
+            }            
+            return rtnCondition;
+        }
+
+        /// <summary>
+        /// 编辑供应商条件集合
+        /// </summary>
+        /// <param name="model">条件模型</param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetDemanderCondition(DemanderConditionModel model)
+        {
+            Dictionary<string, string> rtnCondition = new Dictionary<string, string>();
+            int conditionCnt = 0;
+
+            // 条件编辑
+            switch (model.OprationKind)
+            {
+                case AppConst.Operation_Query:
+                    if (!string.IsNullOrEmpty(model.DemanderId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and DemanderId = '" + model.DemanderId + "' "); }
+                    if (!string.IsNullOrEmpty(model.CompanyName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and companyName like '%" + model.CompanyName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.CompanyAddress)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and companyAddress like '%" + model.CompanyAddress + "%' "); }
+                    if (!string.IsNullOrEmpty(model.PostCode1)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and postCode1 = '" + model.PostCode1 + "' "); }
+                    if (!string.IsNullOrEmpty(model.PostCode2)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and postCode2 = '" + model.PostCode2 + "' "); }
+                    if (!string.IsNullOrEmpty(model.Website)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and website like '%" + model.Website + "%' "); }
+                    if (!string.IsNullOrEmpty(model.NatureEnterprise)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and natureEnterprise = '" + model.NatureEnterprise + "' "); }
+                    if (!string.IsNullOrEmpty(model.Tel)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and tel = '" + model.Tel + "' "); }
+                    if (!string.IsNullOrEmpty(model.Fax)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and fax = '" + model.Fax + "' "); }
+                    rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + model.StartIndex + ", " + model.PageCnt);
+                    break;
+                case AppConst.Operation_Insert:
+                    break;
+                case AppConst.Operation_Update:
+                    break;
+                case AppConst.Operation_Delete:
+                    if (!string.IsNullOrEmpty(model.Id)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Id in (" + model.Id + ") "); }
                     break;
             }
-            
-
             return rtnCondition;
         }
 
         /// <summary>
         /// 编辑角色条件集合
         /// </summary>
-        /// <param name="startIndex">开始位置</param>
-        /// <param name="pageCnt">每页显示条数</param>
-        /// <param name="roleId">角色</param>
-        /// <param name="roleName">角色名称</param>
+        /// <param name="model">条件模型</param>
         /// <returns></returns>
         public static Dictionary<string, string> GetRoleCondition(RoleConditionModel model)
         {
@@ -136,8 +167,9 @@ namespace IWS_Common.Common
             switch(model.OprationKind)
             {
                 case AppConst.Operation_Query:
-                    if (!string.IsNullOrEmpty(model.RoleId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and roleId = '" + model.RoleId + "' "); }
+                    if (!string.IsNullOrEmpty(model.RoleId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and roleId = " + model.RoleId + " "); }
                     if (!string.IsNullOrEmpty(model.RoleName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and roleName like '%" + model.RoleName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.RoleDesc)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and RoleDesc like '%" + model.RoleDesc + "%' "); }
                     rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + model.StartIndex + ", " + model.PageCnt);
                     break;
                 case AppConst.Operation_Insert:
@@ -155,34 +187,69 @@ namespace IWS_Common.Common
         /// <summary>
         /// 编辑入场登记条件集合
         /// </summary>
-        /// <param name="startIndex">开始位置</param>
-        /// <param name="pageCnt">每页显示条数</param>
-        /// <param name="companyId">公司ID</param>
-        /// <param name="companyName">公司名称</param>
-        /// <param name="userId">人员ID</param>
-        /// <param name="userName">人员名称</param>
-        /// <param name="vehicleNumber">车牌号</param>
-        /// <param name="entranceGate">入场大门</param>
-        /// <param name="entranceDateTimeFrom">入场时间From</param>
-        /// <param name="entranceDateTimeTo">入场时间To</param>
-        /// <param name="overseer">监工单位</param>
-        /// <param name="reason">原因</param>
+        /// <param name="model">条件模型</param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetRegistrationCondition(int startIndex, int pageCnt, string companyId, string companyName, string userId, string userName, string vehicleNumber, string entranceGate, string entranceDateTimeFrom, string entranceDateTimeTo, string overseer, string reason)
+        public static Dictionary<string, string> GetRegistrationCondition(RegistrationConditionModel model)
         {
             Dictionary<string, string> rtnCondition = new Dictionary<string, string>();
             int conditionCnt = 0;
 
             // 条件编辑
-            if (!string.IsNullOrEmpty(companyId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and companyId = '" + companyId + "' "); }
-            if (!string.IsNullOrEmpty(companyName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and companyName like '%" + companyName + "%' "); }
-            if (!string.IsNullOrEmpty(userId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and userId = '" + userId + "' "); }
-            if (!string.IsNullOrEmpty(userName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and userName like '%" + userName + "%' "); }
-            if (!string.IsNullOrEmpty(vehicleNumber)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and vehicleNumber = '" + vehicleNumber + "' "); }
-            if (!string.IsNullOrEmpty(entranceGate)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and entranceGate like '%" + entranceGate + "%' "); }
-            if (!string.IsNullOrEmpty(overseer)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and overseer like '%" + overseer + "%' "); }
-            if (!string.IsNullOrEmpty(reason)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and reason like '%" + reason + "%' "); }
-            rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + startIndex + ", " + pageCnt);
+            switch (model.OprationKind)
+            {
+                case AppConst.Operation_Query:
+                    if (!string.IsNullOrEmpty(model.CompanyId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and CompanyId = '" + model.CompanyId + "' "); }
+                    if (!string.IsNullOrEmpty(model.CompanyName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and CompanyName like '%" + model.CompanyName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.UserId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and UserId = '" + model.UserId + "' "); }
+                    if (!string.IsNullOrEmpty(model.UserName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and UserName like '%" + model.UserName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.VehicleNumber)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and VehicleNumber like '%" + model.VehicleNumber + "%' "); }
+                    if (!string.IsNullOrEmpty(model.EntranceGate)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and EntranceGate like '%" + model.EntranceGate + "%' "); }
+                    if (!string.IsNullOrEmpty(model.Overseer)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Overseer like '%" + model.Overseer + "%' "); }
+                    if (!string.IsNullOrEmpty(model.Reason)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Reason like '%" + model.Reason + "%' "); }
+                    rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + model.StartIndex + ", " + model.PageCnt);
+                    break;
+                case AppConst.Operation_Insert:
+                    break;
+                case AppConst.Operation_Update:
+                    break;
+                case AppConst.Operation_Delete:
+                    if (!string.IsNullOrEmpty(model.Id)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Id in (" + model.Id + ") "); }
+                    break;
+            }
+            return rtnCondition;
+        }
+
+        /// <summary>
+        /// 入场审批条件集合
+        /// </summary>
+        /// <param name="model">条件模型</param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetApprovalCondition(ApprovalConditionModel model)
+        {
+            Dictionary<string, string> rtnCondition = new Dictionary<string, string>();
+            int conditionCnt = 0;
+
+            // 条件编辑
+            switch (model.OprationKind)
+            {
+                case AppConst.Operation_Query:
+                    if (!string.IsNullOrEmpty(model.AdmisionType)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and AdmisionType = '" + model.AdmisionType + "' "); }
+                    if (!string.IsNullOrEmpty(model.CompanyName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and CompanyName like '%" + model.CompanyName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.UserName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and UserName like '%" + model.UserName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.VehicleNumber)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and VehicleNumber like '%" + model.VehicleNumber + "%' "); }
+                    if (!string.IsNullOrEmpty(model.EntranceGate)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and EntranceGate like '%" + model.EntranceGate + "%' "); }
+                    if (!string.IsNullOrEmpty(model.Accption)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Accption like '%" + model.Accption + "%' "); }
+                    if (!string.IsNullOrEmpty(model.ApprovalState)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and ApprovalState like '%" + model.ApprovalState + "%' "); }
+                    rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + model.StartIndex + ", " + model.PageCnt);
+                    break;
+                case AppConst.Operation_Insert:
+                    break;
+                case AppConst.Operation_Update:
+                    break;
+                case AppConst.Operation_Delete:
+                    if (!string.IsNullOrEmpty(model.Id)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Id in (" + model.Id + ") "); }
+                    break;
+            }
 
             return rtnCondition;
         }
@@ -190,28 +257,33 @@ namespace IWS_Common.Common
         /// <summary>
         /// 编辑物料条件集合
         /// </summary>
-        /// <param name="startIndex">开始位置</param>
-        /// <param name="pageCnt">每页显示条数</param>
-        /// <param name="materialId">物料编号</param>
-        /// <param name="materialName">物料名称</param>
-        /// <param name="materialEnglishName">物料英文名称</param>
-        /// <param name="specificationsModel">规格型号</param>
-        /// <param name="material">材质</param>
-        /// <param name="materialKind">物料类别</param>
+        /// <param name="model">条件模型</param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetMaterialCondition(int startIndex, int pageCnt, string materialId, string materialName, string materialEnglishName, string specificationsModel, string material, string materialKind)
+        public static Dictionary<string, string> GetMaterialCondition(MaterialConditionModel model)
         {
             Dictionary<string, string> rtnCondition = new Dictionary<string, string>();
             int conditionCnt = 0;
 
             // 条件编辑
-            if (!string.IsNullOrEmpty(materialId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and materialId = '" + materialId + "' "); }
-            if (!string.IsNullOrEmpty(materialName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and materialName like '%" + materialName + "%' "); }
-            if (!string.IsNullOrEmpty(materialEnglishName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and materialEnglishName like '%" + materialEnglishName + "%' "); }
-            if (!string.IsNullOrEmpty(specificationsModel)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and specificationsModel like '%" + specificationsModel + "%' "); }
-            if (!string.IsNullOrEmpty(material)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and material like '%" + material + "%' "); }
-            if (!string.IsNullOrEmpty(materialKind)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and materialKind like '%" + materialKind + "%' "); }
-            rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + startIndex + ", " + pageCnt);
+            switch (model.OprationKind)
+            {
+                case AppConst.Operation_Query:
+                    if (!string.IsNullOrEmpty(model.MaterialId)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and MaterialId = '" + model.MaterialId + "' "); }
+                    if (!string.IsNullOrEmpty(model.MaterialName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and MaterialName like '%" + model.MaterialName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.MaterialEnglishName)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and MaterialEnglishName like '%" + model.MaterialEnglishName + "%' "); }
+                    if (!string.IsNullOrEmpty(model.SpecificationsModel)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and specificationsModel like '%" + model.SpecificationsModel + "%' "); }
+                    if (!string.IsNullOrEmpty(model.Material)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Material like '%" + model.Material + "%' "); }
+                    if (!string.IsNullOrEmpty(model.MaterialKind)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and MaterialKind like '%" + model.MaterialKind + "%' "); }
+                    rtnCondition.Add(AppConst.Dictionary_Condition_Limit, " limit " + model.StartIndex + ", " + model.PageCnt);
+                    break;
+                case AppConst.Operation_Insert:
+                    break;
+                case AppConst.Operation_Update:
+                    break;
+                case AppConst.Operation_Delete:
+                    if (!string.IsNullOrEmpty(model.Id)) { conditionCnt++; rtnCondition.Add(AppConst.Dictionary_Condition + conditionCnt, " and Id in (" + model.Id + ") "); }
+                    break;
+            }
 
             return rtnCondition;
         }

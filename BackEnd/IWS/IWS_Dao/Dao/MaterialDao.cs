@@ -87,6 +87,7 @@ namespace IWS_Dao.Dao
                     {
                         lstMaterial.Add(new m_material()
                         {
+                            Id = GetDBValueToInt(read["Id"]),
                             MaterialId = GetDBValueToString(read["MaterialId"]),
                             MaterialName = GetDBValueToString(read["MaterialName"]),
                             MaterialEnglishName = GetDBValueToString(read["MaterialEnglishName"]),
@@ -129,7 +130,7 @@ namespace IWS_Dao.Dao
             // 数据库事务对象
             MySqlTransaction tran = null;
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -172,7 +173,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -194,14 +195,15 @@ namespace IWS_Dao.Dao
                         paras[4].Value = material.Material;
                         paras[5].Value = material.MaterialKind;
                         paras[6].Value = material.Unit;
-                        paras[7].Value = material.IsDelete;
-                        paras[8].Value = material.CreateUser;
-                        paras[9].Value = material.CreateTime;
-                        paras[10].Value = material.UpdateUser;
-                        paras[11].Value = material.UpdateTime;
+                        paras[7].Value = GetDefualtDeleteFlg(material.IsDelete);
+                        paras[8].Value = GetDefualtUser(material.CreateUser);
+                        paras[9].Value = GetDefualtDatetime(material.CreateTime);
+                        paras[10].Value = GetDefualtUser(material.UpdateUser);
+                        paras[11].Value = GetDefualtDatetime(material.UpdateTime);
                         paras[12].Value = material.Remark;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();                        
+                        intReturnValue += cmd.ExecuteNonQuery();                        
                     }
                 }
                 tran.Commit();
@@ -235,7 +237,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -257,12 +259,14 @@ namespace IWS_Dao.Dao
                         paras[4].Value = material.Material;
                         paras[5].Value = material.MaterialKind;
                         paras[6].Value = material.Unit;
-                        paras[7].Value = material.IsDelete;
-                        paras[8].Value = material.CreateUser;
-                        paras[9].Value = material.CreateTime;
-                        paras[10].Value = material.UpdateUser;
-                        paras[11].Value = material.UpdateTime;
+                        paras[7].Value = GetDefualtDeleteFlg(material.IsDelete);
+                        paras[8].Value = GetDefualtUser(material.CreateUser);
+                        paras[9].Value = GetDefualtDatetime(material.CreateTime);
+                        paras[10].Value = GetDefualtUser(material.UpdateUser);
+                        paras[11].Value = GetDefualtDatetime(material.UpdateTime);
                         paras[12].Value = material.Remark;
+                        paras[13].Value = material.Id;
+                        cmd.Parameters.AddRange(paras);
 
                         intReturnValue = cmd.ExecuteNonQuery();
                     }
@@ -294,7 +298,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select count(*) from m_material Where 1=1 ");
+            sb.Append(" select count(*) from m_material Where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -321,11 +325,16 @@ namespace IWS_Dao.Dao
         public override string CreateDeleteSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" delete from m_material ");
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
+            sb.Append(" update m_material set IsDelete = 1 where IsDelete <> 1 ");
+            if (dicCondition != null)
             {
-                // foreach value sb.Append(Condition Value)
+                foreach (string key in dicCondition.Keys)
+                {
+                    counter++;
+                    if (key.Equals(AppConst.Dictionary_Condition + counter)) sb.Append(dicCondition[AppConst.Dictionary_Condition + counter]);
+                }
             }
             return sb.ToString();
         }
@@ -367,7 +376,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select * from m_material where 1=1 ");
+            sb.Append(" select * from m_material where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -420,7 +429,7 @@ namespace IWS_Dao.Dao
             sb.Append("         @CreateTime, ");
             sb.Append("         @UpdateUser, ");
             sb.Append("         @UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         @Remark ");
             sb.Append(" ) ");
 
             return sb.ToString();
@@ -457,7 +466,8 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@CreateTime",MySqlDbType.DateTime),
                 new MySqlParameter("@UpdateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UpdateTime",MySqlDbType.DateTime),
-                new MySqlParameter("@Remark",MySqlDbType.VarChar,500)
+                new MySqlParameter("@Remark",MySqlDbType.VarChar,500),
+                new MySqlParameter("@Id",MySqlDbType.Int32)
             };
             return paras;
         }
@@ -485,11 +495,8 @@ namespace IWS_Dao.Dao
             sb.Append("        UpdateUser = @UpdateUser, ");
             sb.Append("        UpdateTime = @UpdateTime, ");
             sb.Append("        Remark = @Remark ");
+            sb.Append(" where Id = @Id and IsDelete <> 1 ");
 
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            {
-                // foreach value sb.Append(Condition Value)
-            }
             return sb.ToString();
         }
         #endregion

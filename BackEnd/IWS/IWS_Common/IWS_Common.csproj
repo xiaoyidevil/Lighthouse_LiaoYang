@@ -83,13 +83,17 @@
   <ItemGroup>
     <Compile Include="Common\AppCommon.cs" />
     <Compile Include="Const\AppConst.cs" />
+    <Compile Include="Model\RegistrationConditionModel.cs" />
     <Compile Include="Model\m_jurisdiction.cs" />
     <Compile Include="Model\QueryModel.cs" />
     <Compile Include="Model\m_supplier.cs" />
     <Compile Include="Model\m_demander.cs" />
     <Compile Include="Model\m_material.cs" />
     <Compile Include="Model\m_role.cs" />
+    <Compile Include="Model\MaterialConditionModel.cs" />
     <Compile Include="Model\RoleConditionModel.cs" />
+    <Compile Include="Model\DemanderConditionModel.cs" />
+    <Compile Include="Model\ApprovalConditionModel.cs" />
     <Compile Include="Model\t_registration.cs" />
     <Compile Include="Model\t_approval.cs" />
     <Compile Include="Model\m_vehicle.cs" />

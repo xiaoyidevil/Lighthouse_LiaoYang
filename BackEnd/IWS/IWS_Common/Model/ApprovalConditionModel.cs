@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 供应商条件模型
+    /// 入场审批条件模型
     /// </summary>
-    public class SupplierConditionModel
+    public class ApprovalConditionModel
     {
         public string Id { get; set; }
 
@@ -24,49 +24,39 @@ namespace IWS_Common.Model
         public int PageCnt { get; set; }
 
         /// <summary>
-        /// 供应商ID
+        /// 入场类型
         /// </summary>
-        public string SupplierId;
+        public string AdmisionType { get; set; }
 
         /// <summary>
-        /// 供应商企业名称
+        /// 公司名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 供应商企业地址
+        /// 入场人员
         /// </summary>
-        public string CompanyAddress { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
-        /// 邮政编号1
+        /// 车牌号
         /// </summary>
-        public string PostCode1 { get; set; }
+        public string VehicleNumber { get; set; }
 
         /// <summary>
-        /// 邮政编号2
+        /// 入场大门
         /// </summary>
-        public string PostCode2 { get; set; }
+        public string EntranceGate { get; set; }
 
         /// <summary>
-        /// 企业网址
+        /// 接受单位
         /// </summary>
-        public string Website { get; set; }
+        public string Accption { get; set; }
 
         /// <summary>
-        /// 企业性质
+        /// 审批状态
         /// </summary>
-        public string NatureEnterprise { get; set; }
-
-        /// <summary>
-        /// 电话
-        /// </summary>
-        public string Tel { get; set; }
-
-        /// <summary>
-        /// 传真
-        /// </summary>
-        public string Fax { get; set; }
+        public string ApprovalState { get; set; }
 
         /// <summary>
         /// 操作类型

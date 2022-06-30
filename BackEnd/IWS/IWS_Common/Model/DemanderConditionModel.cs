@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 供应商条件模型
+    /// 需求方条件模型
     /// </summary>
-    public class SupplierConditionModel
+    public class DemanderConditionModel
     {
         public string Id { get; set; }
 
@@ -24,17 +24,17 @@ namespace IWS_Common.Model
         public int PageCnt { get; set; }
 
         /// <summary>
-        /// 供应商ID
+        /// 需求方ID
         /// </summary>
-        public string SupplierId;
+        public string DemanderId;
 
         /// <summary>
-        /// 供应商企业名称
+        /// 需求方企业名称
         /// </summary>
         public string CompanyName { get; set; }
 
         /// <summary>
-        /// 供应商企业地址
+        /// 需求方企业地址
         /// </summary>
         public string CompanyAddress { get; set; }
 

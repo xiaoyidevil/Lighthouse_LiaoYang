@@ -23,7 +23,7 @@ namespace IWS_Webapi.Controllers
         /// 供应商数据查询
         /// </summary>
         /// <returns></returns>
-        public HttpResponseMessage GetSupplierData()
+        public HttpResponseMessage Get()
         {
             InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
             QueryModel model;                                      // Json序列化对象
@@ -127,13 +127,9 @@ namespace IWS_Webapi.Controllers
                 lstSupplier.Add(entity);
                 rtnValue = supplierBusiness.InsertData(DbHelper.GetMysqlConnection(), null, lstSupplier);
 
-                if (rtnValue > 0)
-                {
-                    // Json数据序列化
-                    model.Data = lstSupplier;
-                    model.State = 1;
-                    model.Msg = AppConst.Excute_Success;
-                }
+                model.State = 1;
+                model.Data = lstSupplier;
+                model.Msg = rtnValue > 0 ? AppConst.Excute_Success : AppConst.Excute_NoData;
             }
             catch (Exception ex)
             {
@@ -153,9 +149,9 @@ namespace IWS_Webapi.Controllers
         /// <summary>
         /// 供应商数据删除
         /// </summary>
-        /// <param name="SupplierId">供应商数据键</param>
+        /// <param name="Id">供应商数据键</param>
         /// <returns></returns>
-        public HttpResponseMessage Delete(string SupplierId)
+        public HttpResponseMessage Delete(string Id)
         {
             InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
             QueryModel model;                                      // Json序列化对象
@@ -176,16 +172,12 @@ namespace IWS_Webapi.Controllers
 
                 // 数据删除
                 conditionModel.OprationKind = AppConst.Operation_Delete;
-                conditionModel.SupplierId = SupplierId;
+                conditionModel.Id = Id;
                 dicCondition = AppCommon.GetSupplierCondition(conditionModel);
                 rtnValue = supplierBusiness.DeleteData(DbHelper.GetMysqlConnection(), dicCondition);
 
-                if (rtnValue > 0)
-                {
-                    // Json数据序列化
-                    model.State = 1;
-                    model.Msg = AppConst.Excute_Success;
-                }
+                model.State = 1;
+                model.Msg = rtnValue > 0 ? AppConst.Excute_Success : AppConst.Excute_NoData;
             }
             catch (Exception ex)
             {
@@ -203,13 +195,12 @@ namespace IWS_Webapi.Controllers
         }
 
         /// <summary>
-        /// 用户数据更新
+        /// 供应商数据更新
         /// </summary>
-        /// <param name="entity">用户数据</param>
+        /// <param name="entity">供应商数据</param>
         /// <returns></returns>
         public HttpResponseMessage Put([FromBody] m_supplier entity)
         {
-
             InterfaceBusiness<m_supplier> supplierBusiness;        // 业务层对象
             QueryModel model;                                      // Json序列化对象
             List<m_supplier> lstSupplier;                          // 供应商数据集合
@@ -230,13 +221,9 @@ namespace IWS_Webapi.Controllers
                 lstSupplier.Add(entity);
                 rtnValue = supplierBusiness.UpdateData(DbHelper.GetMysqlConnection(), null, lstSupplier);
 
-                if (rtnValue > 0)
-                {
-                    // Json数据序列化
-                    model.Data = lstSupplier;
-                    model.State = 1;
-                    model.Msg = AppConst.Excute_Success;
-                }
+                model.State = 1;
+                model.Data = lstSupplier;
+                model.Msg = rtnValue > 0 ? AppConst.Excute_Success : AppConst.Excute_NoData;
             }
             catch (Exception ex)
             {

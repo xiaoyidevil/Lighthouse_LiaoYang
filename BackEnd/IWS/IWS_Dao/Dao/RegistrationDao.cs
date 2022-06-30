@@ -133,7 +133,7 @@ namespace IWS_Dao.Dao
             // 数据库事务对象
             MySqlTransaction tran = null;
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -176,7 +176,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -202,12 +202,13 @@ namespace IWS_Dao.Dao
                         paras[8].Value = registration.EntranceTime;
                         paras[9].Value = registration.Overseer;
                         paras[10].Value = registration.Reason;
-                        paras[11].Value = registration.IsDelete;
-                        paras[12].Value = registration.CreateUser;
-                        paras[13].Value = registration.CreateTime;
-                        paras[14].Value = registration.UpdateUser;
-                        paras[15].Value = registration.UpdateTime;
+                        paras[11].Value = GetDefualtDeleteFlg(registration.IsDelete);
+                        paras[12].Value = GetDefualtUser(registration.CreateUser);
+                        paras[13].Value = GetDefualtDatetime(registration.CreateTime);
+                        paras[14].Value = GetDefualtUser(registration.UpdateUser);
+                        paras[15].Value = GetDefualtDatetime(registration.UpdateTime);
                         paras[16].Value = registration.Remark;
+                        cmd.Parameters.AddRange(paras);
 
                         intReturnValue = cmd.ExecuteNonQuery();                        
                     }
@@ -243,7 +244,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -269,12 +270,13 @@ namespace IWS_Dao.Dao
                         paras[8].Value = registration.EntranceTime;
                         paras[9].Value = registration.Overseer;
                         paras[10].Value = registration.Reason;
-                        paras[11].Value = registration.IsDelete;
-                        paras[12].Value = registration.CreateUser;
-                        paras[13].Value = registration.CreateTime;
-                        paras[14].Value = registration.UpdateUser;
-                        paras[15].Value = registration.UpdateTime;
+                        paras[11].Value = GetDefualtDeleteFlg(registration.IsDelete);
+                        paras[12].Value = GetDefualtUser(registration.CreateUser);
+                        paras[13].Value = GetDefualtDatetime(registration.CreateTime);
+                        paras[14].Value = GetDefualtUser(registration.UpdateUser);
+                        paras[15].Value = GetDefualtDatetime(registration.UpdateTime);
                         paras[16].Value = registration.Remark;
+                        cmd.Parameters.AddRange(paras);
 
                         intReturnValue = cmd.ExecuteNonQuery();
                     }
@@ -333,12 +335,17 @@ namespace IWS_Dao.Dao
         public override string CreateDeleteSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" delete from t_registration ");
-            //if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            //{
-            //    // foreach value sb.Append(Condition Value)
-            //}
+            sb.Append(" update t_registration set IsDelete = 1 where IsDelete <> 1 ");
+            if (dicCondition != null)
+            {
+                foreach (string key in dicCondition.Keys)
+                {
+                    counter++;
+                    if (key.Equals(AppConst.Dictionary_Condition + counter)) sb.Append(dicCondition[AppConst.Dictionary_Condition + counter]);
+                }
+            }
             return sb.ToString();
         }
 
@@ -442,7 +449,7 @@ namespace IWS_Dao.Dao
             sb.Append("         @CreateTime, ");
             sb.Append("         @UpdateUser, ");
             sb.Append("         @UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         @Remark ");
             sb.Append(" ) ");
 
             return sb.ToString();
@@ -497,8 +504,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
 
             sb.Append(" update t_registration ");
-            sb.Append("    set Id = @Id, ");
-            sb.Append("        CompanyId = @CompanyId, ");
+            sb.Append("    set CompanyId = @CompanyId, ");
             sb.Append("        CompanyName = @CompanyName, ");
             sb.Append("        UserId = @UserId, ");
             sb.Append("        UserName = @UserName, ");
@@ -514,11 +520,8 @@ namespace IWS_Dao.Dao
             sb.Append("        UpdateUser = @UpdateUser, ");
             sb.Append("        UpdateTime = @UpdateTime, ");
             sb.Append("        Remark = @Remark ");
+            sb.Append(" where Id = @Id and IsDelete <> 1 ");
 
-            //if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            //{
-            //    // foreach value sb.Append(Condition Value)
-            //}
             return sb.ToString();
         }
         #endregion

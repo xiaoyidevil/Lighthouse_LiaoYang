@@ -117,7 +117,7 @@ namespace IWS_Business.Business
             {
                 // 用户模型Dao层对象
                 InterfaceDao<m_vehicle> vehicleDao = new VehicleDao();
-                intReturnValue = vehicleDao.UpdateData(conn, dicCondition);
+                intReturnValue = vehicleDao.UpdateData(conn, dicCondition, lstData);
             }
             catch (Exception ex)
             {

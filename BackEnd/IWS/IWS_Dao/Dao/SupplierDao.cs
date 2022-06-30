@@ -136,14 +136,15 @@ namespace IWS_Dao.Dao
                         paras[6].Value = supplier.NatureEnterprise;
                         paras[7].Value = supplier.Tel;
                         paras[8].Value = supplier.Fax;
-                        paras[9].Value = supplier.IsDelete;
-                        paras[10].Value = supplier.CreateUser;
-                        paras[11].Value = supplier.CreateTime;
-                        paras[12].Value = supplier.UpdateUser;
-                        paras[13].Value = supplier.UpdateTime;
+                        paras[9].Value = GetDefualtDeleteFlg(supplier.IsDelete);
+                        paras[10].Value = GetDefualtUser(supplier.CreateUser);
+                        paras[11].Value = GetDefualtDatetime(supplier.CreateTime);
+                        paras[12].Value = GetDefualtUser(supplier.UpdateUser);
+                        paras[13].Value = GetDefualtDatetime(supplier.UpdateTime);
                         paras[14].Value = supplier.Remark;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();
+                        intReturnValue += cmd.ExecuteNonQuery();
                     }
                 }
                 tran.Commit();
@@ -260,14 +261,16 @@ namespace IWS_Dao.Dao
                         paras[6].Value = supplier.NatureEnterprise;
                         paras[7].Value = supplier.Tel;
                         paras[8].Value = supplier.Fax;
-                        paras[9].Value = supplier.IsDelete;
-                        paras[10].Value = supplier.CreateUser;
-                        paras[11].Value = supplier.CreateTime;
-                        paras[12].Value = supplier.UpdateUser;
-                        paras[13].Value = supplier.UpdateTime;
+                        paras[9].Value = GetDefualtDeleteFlg(supplier.IsDelete);
+                        paras[10].Value = GetDefualtUser(supplier.CreateUser);
+                        paras[11].Value = GetDefualtDatetime(supplier.CreateTime);
+                        paras[12].Value = GetDefualtUser(supplier.UpdateUser);
+                        paras[13].Value = GetDefualtDatetime(supplier.UpdateTime);
                         paras[14].Value = supplier.Remark;
+                        paras[15].Value = supplier.Id;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();
+                        intReturnValue += cmd.ExecuteNonQuery();
                     }
                 }
                 tran.Commit();
@@ -297,7 +300,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select count(*) from m_supplier where 1=1 ");
+            sb.Append(" select count(*) from m_supplier where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -324,12 +327,17 @@ namespace IWS_Dao.Dao
         public override string CreateDeleteSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" delete from m_supplier ");
-            //if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            //{
-            //    // foreach value sb.Append(Condition Value)
-            //}
+            sb.Append(" update m_supplier  set IsDelete = 1 where IsDelete <> 1 ");
+            if (dicCondition != null)
+            {
+                foreach (string key in dicCondition.Keys)
+                {
+                    counter++;
+                    if (key.Equals(AppConst.Dictionary_Condition + counter)) sb.Append(dicCondition[AppConst.Dictionary_Condition + counter]);
+                }
+            }
             return sb.ToString();
         }
 
@@ -341,7 +349,7 @@ namespace IWS_Dao.Dao
         {
             MySqlParameter[] paras = new MySqlParameter[]
             {
-                new MySqlParameter("@JurisdictionId",MySqlDbType.VarChar,10),
+                new MySqlParameter("@SupplierId",MySqlDbType.VarChar,10),
                 new MySqlParameter("@CompanyName",MySqlDbType.VarChar,100),
                 new MySqlParameter("@CompanyAddress",MySqlDbType.VarChar,250),
                 new MySqlParameter("@PostCode1",MySqlDbType.VarChar,10),
@@ -403,7 +411,7 @@ namespace IWS_Dao.Dao
             sb.Append("         @CreateTime, ");
             sb.Append("         @UpdateUser, ");
             sb.Append("         @UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         @Remark ");
             sb.Append(" ) ");
 
             return sb.ToString();
@@ -424,7 +432,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select * from m_supplier where 1=1 ");
+            sb.Append(" select * from m_supplier where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -460,7 +468,8 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@CreateTime",MySqlDbType.DateTime),
                 new MySqlParameter("@UpdateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UpdateTime",MySqlDbType.DateTime),
-                new MySqlParameter("@Remark",MySqlDbType.VarChar,500)
+                new MySqlParameter("@Remark",MySqlDbType.VarChar,500),
+                new MySqlParameter("@Id",MySqlDbType.Int32)
             };
             return paras;
         }
@@ -490,11 +499,8 @@ namespace IWS_Dao.Dao
             sb.Append("        UpdateUser = @UpdateUser, ");
             sb.Append("        UpdateTime = @UpdateTime, ");
             sb.Append("        Remark = @Remark ");
-
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            {
-                // foreach value sb.Append(Condition Value)
-            }
+            sb.Append(" where Id = @Id and IsDelete <> 1 ");
+            
             return sb.ToString();
         }
         #endregion

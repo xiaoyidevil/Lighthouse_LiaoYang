@@ -11,6 +11,8 @@ namespace IWS_Common.Model
     /// </summary>
     public class m_demander
     {
+        public int? Id { get; set; }
+
         /// <summary>
         /// 需求方编号
         /// </summary>

@@ -98,7 +98,6 @@ namespace IWS_Webapi.Controllers
         /// <returns></returns>
         public HttpResponseMessage Post([FromBody] m_vehicle entity)
         {
-
             InterfaceBusiness<m_vehicle> userBusiness;             // 业务层对象
             QueryModel model;                                      // Json序列化对象
             List<m_vehicle> lstVehicle;                            // 车辆数据集合
@@ -119,13 +118,9 @@ namespace IWS_Webapi.Controllers
                 lstVehicle.Add(entity);
                 rtnValue = userBusiness.InsertData(DbHelper.GetMysqlConnection(), null, lstVehicle);
 
-                if (rtnValue > 0)
-                {
-                    // Json数据序列化
-                    model.Data = lstVehicle;
-                    model.State = 1;
-                    model.Msg = AppConst.Excute_Success;
-                }
+                model.State = 1;
+                model.Data = lstVehicle;
+                model.Msg = rtnValue > 0 ? AppConst.Excute_Success : AppConst.Excute_NoData;
             }
             catch (Exception ex)
             {
@@ -145,9 +140,9 @@ namespace IWS_Webapi.Controllers
         /// <summary>
         /// 车辆数据删除
         /// </summary>
-        /// <param name="VehicleId">车辆数据键</param>
+        /// <param name="Id">车辆数据键</param>
         /// <returns></returns>
-        public HttpResponseMessage Delete(string VehicleId)
+        public HttpResponseMessage Delete(string Id)
         {
             InterfaceBusiness<m_vehicle> vehicleBusiness;          // 业务层对象
             QueryModel model;                                      // Json序列化对象
@@ -167,17 +162,13 @@ namespace IWS_Webapi.Controllers
                 DbHelper.FirstCreateMysqlConnection();
 
                 // 数据删除
+                conditionModel.Id = Id;
                 conditionModel.OprationKind = AppConst.Operation_Delete;
-                conditionModel.VehicleId = VehicleId;
                 dicCondition = AppCommon.GetVehicleCondition(conditionModel);
                 rtnValue = vehicleBusiness.DeleteData(DbHelper.GetMysqlConnection(), dicCondition);
 
-                if (rtnValue > 0)
-                {
-                    // Json数据序列化
-                    model.State = 1;
-                    model.Msg = AppConst.Excute_Success;
-                }
+                model.State = 1;
+                model.Msg = rtnValue > 0 ? AppConst.Excute_Success : AppConst.Excute_NoData;
             }
             catch (Exception ex)
             {
@@ -201,7 +192,6 @@ namespace IWS_Webapi.Controllers
         /// <returns></returns>
         public HttpResponseMessage Put([FromBody] m_vehicle entity)
         {
-
             InterfaceBusiness<m_vehicle> vehicleBusiness;          // 业务层对象
             QueryModel model;                                      // Json序列化对象
             List<m_vehicle> lstVehicle;                            // 用户数据集合
@@ -222,13 +212,9 @@ namespace IWS_Webapi.Controllers
                 lstVehicle.Add(entity);
                 rtnValue = vehicleBusiness.UpdateData(DbHelper.GetMysqlConnection(), null, lstVehicle);
 
-                if (rtnValue > 0)
-                {
-                    // Json数据序列化
-                    model.Data = lstVehicle;
-                    model.State = 1;
-                    model.Msg = AppConst.Excute_Success;
-                }
+                model.State = 1;
+                model.Data = lstVehicle;
+                model.Msg = rtnValue > 0 ? AppConst.Excute_Success : AppConst.Excute_NoData;
             }
             catch (Exception ex)
             {

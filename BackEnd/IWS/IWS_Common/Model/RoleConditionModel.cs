@@ -32,6 +32,11 @@ namespace IWS_Common.Model
         public string RoleName { get; set; }
 
         /// <summary>
+        /// 角色描述
+        /// </summary>
+        public string RoleDesc { get; set; }
+
+        /// <summary>
         /// 操作类型
         /// </summary>
         public string OprationKind { get; set; }

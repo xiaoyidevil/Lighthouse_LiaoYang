@@ -117,7 +117,7 @@ namespace IWS_Business.Business
             {
                 // 用户模型Dao层对象
                 InterfaceDao<m_material> materialDao = new MaterialDao();
-                intReturnValue = materialDao.UpdateData(conn, dicCondition);
+                intReturnValue = materialDao.UpdateData(conn, dicCondition, lstData);
             }
             catch (Exception ex)
             {

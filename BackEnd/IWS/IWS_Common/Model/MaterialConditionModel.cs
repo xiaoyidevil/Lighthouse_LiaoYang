@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace IWS_Common.Model
 {
     /// <summary>
-    /// 供应商条件模型
+    /// 物料条件模型
     /// </summary>
-    public class SupplierConditionModel
+    public class MaterialConditionModel
     {
         public string Id { get; set; }
 
@@ -24,49 +24,34 @@ namespace IWS_Common.Model
         public int PageCnt { get; set; }
 
         /// <summary>
-        /// 供应商ID
+        /// 物料ID
         /// </summary>
-        public string SupplierId;
+        public string MaterialId { get; set; }
 
         /// <summary>
-        /// 供应商企业名称
+        /// 物料名称
         /// </summary>
-        public string CompanyName { get; set; }
+        public string MaterialName { get; set; }
 
         /// <summary>
-        /// 供应商企业地址
+        /// 物料英文名称
         /// </summary>
-        public string CompanyAddress { get; set; }
+        public string MaterialEnglishName { get; set; }
 
         /// <summary>
-        /// 邮政编号1
+        /// 规格型号
         /// </summary>
-        public string PostCode1 { get; set; }
+        public string SpecificationsModel { get; set; }
 
         /// <summary>
-        /// 邮政编号2
+        /// 材质
         /// </summary>
-        public string PostCode2 { get; set; }
+        public string Material { get; set; }
 
         /// <summary>
-        /// 企业网址
+        /// 物料类别
         /// </summary>
-        public string Website { get; set; }
-
-        /// <summary>
-        /// 企业性质
-        /// </summary>
-        public string NatureEnterprise { get; set; }
-
-        /// <summary>
-        /// 电话
-        /// </summary>
-        public string Tel { get; set; }
-
-        /// <summary>
-        /// 传真
-        /// </summary>
-        public string Fax { get; set; }
+        public string MaterialKind { get; set; }
 
         /// <summary>
         /// 操作类型

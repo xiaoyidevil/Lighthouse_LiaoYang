@@ -89,13 +89,12 @@ namespace IWS_Dao.Dao
                         {
                             RoleId = GetDBValueToInt(read["RoleId"]),
                             RoleName = GetDBValueToString(read["RoleName"]),
-                            JurisdictionId = GetDBValueToString(read["RoleDesc"]),
+                            RoleDesc = GetDBValueToString(read["RoleDesc"]),
                             IsDelete = GetDBValueToInt(read["IsDelete"]),
                             CreateUser = GetDBValueToString(read["CreateUser"]),
                             CreateTime = GetDBValueToDateTime(read["CreateTime"]),
                             UpdateUser = GetDBValueToString(read["UpdateUser"]),
-                            UpdateTime = GetDBValueToDateTime(read["UpdateTime"]),
-                            Remark = GetDBValueToString(read["Remark"])
+                            UpdateTime = GetDBValueToDateTime(read["UpdateTime"])
                         });
                     }
                 }
@@ -125,7 +124,7 @@ namespace IWS_Dao.Dao
             // 数据库事务对象
             MySqlTransaction tran = null;
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -168,7 +167,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -183,19 +182,16 @@ namespace IWS_Dao.Dao
                     foreach (m_role role in lstData)
                     {
                         paras = CreateInsertParameter();
-                        paras[0].Value = role.RoleId;
-                        paras[1].Value = role.RoleName;
-                        paras[2].Value = role.JurisdictionId;
-                        paras[3].Value = role.DepartmentId;
-                        paras[4].Value = role.DepartmentName;
-                        paras[5].Value = role.IsDelete;
-                        paras[6].Value = role.CreateUser;
-                        paras[7].Value = role.CreateTime;
-                        paras[8].Value = role.UpdateUser;
-                        paras[9].Value = role.UpdateTime;
-                        paras[10].Value = role.Remark;
+                        paras[0].Value = role.RoleName;
+                        paras[1].Value = role.RoleDesc;
+                        paras[2].Value = GetDefualtDeleteFlg(role.IsDelete);
+                        paras[3].Value = GetDefualtUser(role.CreateUser);
+                        paras[4].Value = GetDefualtDatetime(role.CreateTime);
+                        paras[5].Value = GetDefualtUser(role.UpdateUser);
+                        paras[6].Value = GetDefualtDatetime(role.UpdateTime);
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();                        
+                        intReturnValue += cmd.ExecuteNonQuery();                        
                     }
                 }
                 tran.Commit();
@@ -229,7 +225,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -244,19 +240,17 @@ namespace IWS_Dao.Dao
                     foreach (m_role role in lstData)
                     {
                         paras = CreateUpdateParameter();
-                        paras[0].Value = role.RoleId;
-                        paras[1].Value = role.RoleName;
-                        paras[2].Value = role.JurisdictionId;
-                        paras[3].Value = role.DepartmentId;
-                        paras[4].Value = role.DepartmentName;
-                        paras[5].Value = role.IsDelete;
-                        paras[6].Value = role.CreateUser;
-                        paras[7].Value = role.CreateTime;
-                        paras[8].Value = role.UpdateUser;
-                        paras[9].Value = role.UpdateTime;
-                        paras[10].Value = role.Remark;
+                        paras[0].Value = role.RoleName;
+                        paras[1].Value = role.RoleDesc;
+                        paras[2].Value = GetDefualtDeleteFlg(role.IsDelete);
+                        paras[3].Value = GetDefualtUser(role.CreateUser);
+                        paras[4].Value = GetDefualtDatetime(role.CreateTime);
+                        paras[5].Value = GetDefualtUser(role.UpdateUser);
+                        paras[6].Value = GetDefualtDatetime(role.UpdateTime);
+                        paras[7].Value = role.RoleId;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();
+                        intReturnValue += cmd.ExecuteNonQuery();
                     }
                 }
                 tran.Commit();
@@ -286,7 +280,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select count(*) from m_role where 1=1 ");
+            sb.Append(" select count(*) from m_role where IsDelete <> 0 ");
 
             if (dicCondition != null)
             {
@@ -313,12 +307,17 @@ namespace IWS_Dao.Dao
         public override string CreateDeleteSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" delete from m_role ");
-            //if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            //{
-            //    // foreach value sb.Append(Condition Value)
-            //}
+            sb.Append(" update m_role set IsDelete = 1 where IsDelete <> 1 ");
+            if (dicCondition != null)
+            {
+                foreach (string key in dicCondition.Keys)
+                {
+                    counter++;
+                    if (key.Equals(AppConst.Dictionary_Condition + counter)) sb.Append(dicCondition[AppConst.Dictionary_Condition + counter]);
+                }
+            }
             return sb.ToString();
         }
 
@@ -331,18 +330,14 @@ namespace IWS_Dao.Dao
         public override MySqlParameter[] CreateInsertParameter()
         {
             MySqlParameter[] paras = new MySqlParameter[] 
-            {
-                new MySqlParameter("@RoleId",MySqlDbType.Int32),
-                new MySqlParameter("@RoleName",MySqlDbType.VarChar,100),
-                new MySqlParameter("@JurisdictionId",MySqlDbType.VarChar,20),
-                new MySqlParameter("@DepartmentId",MySqlDbType.VarChar,20),
-                new MySqlParameter("@DepartmentName",MySqlDbType.VarChar,100),
+            {                
+                new MySqlParameter("@RoleName",MySqlDbType.VarChar,20),
+                new MySqlParameter("@RoleDesc",MySqlDbType.VarChar,100),
                 new MySqlParameter("@IsDelete",MySqlDbType.Int32,0),
                 new MySqlParameter("@CreateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@CreateTime",MySqlDbType.DateTime),
                 new MySqlParameter("@UpdateUser",MySqlDbType.VarChar,10),
-                new MySqlParameter("@UpdateTime",MySqlDbType.DateTime),
-                new MySqlParameter("@Remark",MySqlDbType.VarChar,500)
+                new MySqlParameter("@UpdateTime",MySqlDbType.DateTime)
             };
             return paras;
         }
@@ -357,7 +352,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select * from m_role where 1=1 ");
+            sb.Append(" select * from m_role where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -382,31 +377,23 @@ namespace IWS_Dao.Dao
 
             sb.Append(" insert into m_role ");
             sb.Append(" ( ");
-            sb.Append("         RoleId, ");
             sb.Append("         RoleName, ");
-            sb.Append("         JurisdictionId, ");
-            sb.Append("         DepartmentId, ");
-            sb.Append("         DepartmentName, ");
+            sb.Append("         RoleDesc, ");
             sb.Append("         IsDelete, ");
             sb.Append("         CreateUser, ");
             sb.Append("         CreateTime, ");
             sb.Append("         UpdateUser, ");
-            sb.Append("         UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         UpdateTime ");
             sb.Append(" ) ");
             sb.Append(" values ");
             sb.Append(" ( ");
-            sb.Append("         @RoleId, ");
             sb.Append("         @RoleName, ");
-            sb.Append("         @JurisdictionId, ");
-            sb.Append("         @DepartmentId, ");
-            sb.Append("         @DepartmentName, ");
+            sb.Append("         @RoleDesc, ");
             sb.Append("         @IsDelete, ");
             sb.Append("         @CreateUser, ");
             sb.Append("         @CreateTime, ");
             sb.Append("         @UpdateUser, ");
-            sb.Append("         @UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         @UpdateTime ");
             sb.Append(" ) ");
 
             return sb.ToString();
@@ -430,18 +417,15 @@ namespace IWS_Dao.Dao
         public override MySqlParameter[] CreateUpdateParameter()
         {
             MySqlParameter[] paras = new MySqlParameter[]
-            {
-                new MySqlParameter("@RoleId",MySqlDbType.Int32),
-                new MySqlParameter("@RoleName",MySqlDbType.VarChar,100),
-                new MySqlParameter("@JurisdictionId",MySqlDbType.VarChar,20),
-                new MySqlParameter("@DepartmentId",MySqlDbType.VarChar,20),
-                new MySqlParameter("@DepartmentName",MySqlDbType.VarChar,100),
+            {                
+                new MySqlParameter("@RoleName",MySqlDbType.VarChar,20),
+                new MySqlParameter("@RoleDesc",MySqlDbType.VarChar,100),
                 new MySqlParameter("@IsDelete",MySqlDbType.Int32,0),
                 new MySqlParameter("@CreateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@CreateTime",MySqlDbType.DateTime),
                 new MySqlParameter("@UpdateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UpdateTime",MySqlDbType.DateTime),
-                new MySqlParameter("@Remark",MySqlDbType.VarChar,500)
+                new MySqlParameter("@RoleId",MySqlDbType.Int32)
             };
             return paras;
         }
@@ -456,22 +440,14 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
 
             sb.Append(" update m_role ");
-            sb.Append("    set RoleId = @RoleId, ");
-            sb.Append("        RoleName = @RoleName, ");
-            sb.Append("        JurisdictionId = @JurisdictionId, ");
-            sb.Append("        DepartmentId = @DepartmentId, ");
-            sb.Append("        DepartmentName = @DepartmentName, ");
+            sb.Append("    set RoleName = @RoleName, ");
+            sb.Append("        RoleDesc = @RoleDesc, ");
             sb.Append("        IsDelete = @IsDelete, ");
             sb.Append("        CreateUser = @CreateUser, ");
             sb.Append("        CreateTime = @CreateTime, ");
             sb.Append("        UpdateUser = @UpdateUser, ");
-            sb.Append("        UpdateTime = @UpdateTime, ");
-            sb.Append("        Remark = @Remark ");
-
-            //if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            //{
-            //    // foreach value sb.Append(Condition Value)
-            //}
+            sb.Append("        UpdateTime = @UpdateTime ");
+            sb.Append(" where RoleId = @RoleId and IsDelete <> 1 ");
             return sb.ToString();
         }
         #endregion

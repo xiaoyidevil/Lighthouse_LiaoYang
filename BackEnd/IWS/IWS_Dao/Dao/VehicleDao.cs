@@ -129,7 +129,7 @@ namespace IWS_Dao.Dao
             // 数据库事务对象
             MySqlTransaction tran = null;
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -172,7 +172,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -193,14 +193,15 @@ namespace IWS_Dao.Dao
                         paras[3].Value = vehicle.Color;
                         paras[4].Value = vehicle.Weight;
                         paras[5].Value = vehicle.FullLoadWeight;
-                        paras[6].Value = vehicle.IsDelete;
-                        paras[7].Value = vehicle.CreateUser;
-                        paras[8].Value = vehicle.CreateTime;
-                        paras[9].Value = vehicle.UpdateUser;
-                        paras[10].Value = vehicle.UpdateTime;
+                        paras[6].Value = GetDefualtDeleteFlg(vehicle.IsDelete);
+                        paras[7].Value = GetDefualtUser(vehicle.CreateUser);
+                        paras[8].Value = GetDefualtDatetime(vehicle.CreateTime);
+                        paras[9].Value = GetDefualtUser(vehicle.UpdateUser);
+                        paras[10].Value = GetDefualtDatetime(vehicle.UpdateTime);
                         paras[11].Value = vehicle.Remark;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();                        
+                        intReturnValue += cmd.ExecuteNonQuery();                        
                     }
                 }
                 tran.Commit();
@@ -234,7 +235,7 @@ namespace IWS_Dao.Dao
             MySqlParameter[] paras = null;
 
             // 连接失效返回空
-            if (conn.State == System.Data.ConnectionState.Open) return 0;
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
 
             try
             {
@@ -255,14 +256,16 @@ namespace IWS_Dao.Dao
                         paras[3].Value = vehicle.Color;
                         paras[4].Value = vehicle.Weight;
                         paras[5].Value = vehicle.FullLoadWeight;
-                        paras[6].Value = vehicle.IsDelete;
-                        paras[7].Value = vehicle.CreateUser;
-                        paras[8].Value = vehicle.CreateTime;
-                        paras[9].Value = vehicle.UpdateUser;
-                        paras[10].Value = vehicle.UpdateTime;
+                        paras[6].Value = GetDefualtDeleteFlg(vehicle.IsDelete);
+                        paras[7].Value = GetDefualtUser(vehicle.CreateUser);
+                        paras[8].Value = GetDefualtDatetime(vehicle.CreateTime);
+                        paras[9].Value = GetDefualtUser(vehicle.UpdateUser);
+                        paras[10].Value = GetDefualtDatetime(vehicle.UpdateTime);
                         paras[11].Value = vehicle.Remark;
+                        paras[12].Value = vehicle.Id;
+                        cmd.Parameters.AddRange(paras);
 
-                        intReturnValue = cmd.ExecuteNonQuery();
+                        intReturnValue += cmd.ExecuteNonQuery();
                     }
                 }
                 tran.Commit();
@@ -292,7 +295,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select count(*) from m_vehicle where 1=1 ");
+            sb.Append(" select count(*) from m_vehicle where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -319,11 +322,16 @@ namespace IWS_Dao.Dao
         public override string CreateDeleteSql(Dictionary<string, string> dicCondition)
         {
             StringBuilder sb = new StringBuilder();
+            int counter = 0;
 
-            sb.Append(" delete from m_vehicle ");
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
+            sb.Append(" update m_vehicle set IsDelete = 1 where IsDelete <> 1  ");
+            if (dicCondition != null)
             {
-                // foreach value sb.Append(Condition Value)
+                foreach (string key in dicCondition.Keys)
+                {
+                    counter++;
+                    if (key.Equals(AppConst.Dictionary_Condition + counter)) sb.Append(dicCondition[AppConst.Dictionary_Condition + counter]);
+                }
             }
             return sb.ToString();
         }
@@ -362,7 +370,7 @@ namespace IWS_Dao.Dao
             StringBuilder sb = new StringBuilder();
             int counter = 0;
 
-            sb.Append(" select * from m_vehicle where 1=1 ");
+            sb.Append(" select * from m_vehicle where IsDelete <> 1 ");
 
             if (dicCondition != null)
             {
@@ -413,7 +421,7 @@ namespace IWS_Dao.Dao
             sb.Append("         @CreateTime, ");
             sb.Append("         @UpdateUser, ");
             sb.Append("         @UpdateTime, ");
-            sb.Append("         Remark ");
+            sb.Append("         @Remark ");
             sb.Append(" ) ");
 
             return sb.ToString();
@@ -448,7 +456,8 @@ namespace IWS_Dao.Dao
                 new MySqlParameter("@CreateTime",MySqlDbType.DateTime),
                 new MySqlParameter("@UpdateUser",MySqlDbType.VarChar,10),
                 new MySqlParameter("@UpdateTime",MySqlDbType.DateTime),
-                new MySqlParameter("@Remark",MySqlDbType.VarChar,500)
+                new MySqlParameter("@Remark",MySqlDbType.VarChar,500),
+                new MySqlParameter("@Id",MySqlDbType.Int32)
             };
             return paras;
         }
@@ -475,11 +484,8 @@ namespace IWS_Dao.Dao
             sb.Append("        UpdateUser = @UpdateUser, ");
             sb.Append("        UpdateTime = @UpdateTime, ");
             sb.Append("        Remark = @Remark ");
+            sb.Append(" where Id = @Id and IsDelete <> 1 ");
 
-            if (dicCondition != null && dicCondition.ContainsKey(AppConst.Dictionary_ConditionCnt))
-            {
-                // foreach value sb.Append(Condition Value)
-            }
             return sb.ToString();
         }
         #endregion

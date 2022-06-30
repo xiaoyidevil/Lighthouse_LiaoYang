@@ -117,7 +117,7 @@ namespace IWS_Business.Business
             {
                 // 用户模型Dao层对象
                 InterfaceDao<m_supplier> supplierDao = new SupplierDao();
-                intReturnValue = supplierDao.UpdateData(conn, dicCondition);
+                intReturnValue = supplierDao.UpdateData(conn, dicCondition, lstData);
             }
             catch (Exception ex)
             {

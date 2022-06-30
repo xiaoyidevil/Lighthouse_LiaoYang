@@ -11,6 +11,8 @@ namespace IWS_Common.Model
     /// </summary>
     public class m_material
     {
+        public int? Id { get; set; }
+
         /// <summary>
         /// 物料编号
         /// </summary>

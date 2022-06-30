@@ -22,19 +22,9 @@ namespace IWS_Common.Model
         public string RoleName { get; set; }
 
         /// <summary>
-        /// 角色拥有权限
+        /// 角色描述
         /// </summary>
-        public string JurisdictionId { get; set; }
-
-        /// <summary>
-        /// 所属部门ID
-        /// </summary>
-        public string DepartmentId { get; set; }
-
-        /// <summary>
-        /// 所属部门名称
-        /// </summary>
-        public string DepartmentName { get; set; }        
+        public string RoleDesc { get; set; }
 
         /// <summary>
         /// 删除标记
