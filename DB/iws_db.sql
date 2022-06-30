@@ -42,6 +42,13 @@ CREATE TABLE `m_demander`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '需求方基本信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of m_demander
+-- ----------------------------
+INSERT INTO `m_demander` VALUES (1, '2001', '中国', '中国大连', '111', '222', 'www.111.com', '123', '111', '2222', 1, 'SYSTEM', '2022-06-29 22:56:13', 'SYSTEM', '2022-06-29 22:56:13', NULL);
+INSERT INTO `m_demander` VALUES (3, '22222', 'IBM1', '黄泥川1', '1111', '2222', '3333', '22222', '444444', '555555', 1, 'eee', '2022-06-30 10:27:13', 'SYSTEM', '2022-06-30 10:27:13', 'asdfasdfasdfas');
+INSERT INTO `m_demander` VALUES (4, '3333', 'IBM', '黄泥川', '111', '222', '333', '11111', '7432342342', '231231', 0, 'SYSTEM', '2022-06-30 10:14:35', 'SYSTEM', '2022-06-30 10:14:35', 'adfasdfasdfasdfas');
+
+-- ----------------------------
 -- Table structure for m_jurisdiction
 -- ----------------------------
 DROP TABLE IF EXISTS `m_jurisdiction`;
@@ -120,6 +127,12 @@ CREATE TABLE `m_material`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '物料表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of m_material
+-- ----------------------------
+INSERT INTO `m_material` VALUES (1, '111', '物料名称1', '物料英文名称1', '规格型号1', '材质1', '物料类别1', '计量单位1', 1, 'SYSTEM', '2022-06-30 13:50:49', 'SYSTEM', '2022-06-30 13:50:49', NULL);
+INSERT INTO `m_material` VALUES (2, '123', '321', 'asd', '123asd', '123ad', 'asd', 'asda', 1, 'SYSTEM', '2022-06-30 14:44:39', 'SYSTEM', '2022-06-30 14:44:39', NULL);
+
+-- ----------------------------
 -- Table structure for m_role
 -- ----------------------------
 DROP TABLE IF EXISTS `m_role`;
@@ -128,18 +141,20 @@ CREATE TABLE `m_role`  (
   `RoleName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名称',
   `RoleDesc` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色描述',
   `CreateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
-  `CreateTime` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `UpdateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
-  `UpdateTime` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP,
-  `IsDelete` tinyint(0) NULL DEFAULT 0 COMMENT '物理删除标志',
+  `UpdateTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  `IsDelete` int(0) NULL DEFAULT 0 COMMENT '物理删除标志',
   PRIMARY KEY (`RoleId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_role
 -- ----------------------------
-INSERT INTO `m_role` VALUES (1, '部长', '负责公司日常业务', 'SYSTEM', '2022-06-27 15:47:47', 'SYSTEM', '2022-06-27 15:47:47', 0);
-INSERT INTO `m_role` VALUES (2, '一般用户', '一般数据录入', 'SYSTEM', '2022-06-27 15:47:47', 'SYSTEM', '2022-06-27 15:47:47', 0);
+INSERT INTO `m_role` VALUES (1, '部长', '负责公司日常业务', 'SYSTEM', '2022-06-27 15:47:47', 'SYSTEM', '2022-06-27 15:47:47', 1);
+INSERT INTO `m_role` VALUES (2, '一般用户', '一般数据录入', 'SYSTEM', '2022-06-27 15:47:47', 'SYSTEM', '2022-06-27 15:47:47', 1);
+INSERT INTO `m_role` VALUES (3, '', '', 'SYSTEM', '2022-06-30 11:26:31', 'SYSTEM', '2022-06-30 11:26:32', 1);
+INSERT INTO `m_role` VALUES (4, '大官111', '2222222', 'SYSTEM', '2022-06-30 13:09:53', 'SYSTEM', '2022-06-30 13:09:53', 0);
 
 -- ----------------------------
 -- Table structure for m_role_jurisdiction
@@ -223,6 +238,12 @@ CREATE TABLE `m_supplier`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '供应商基本信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of m_supplier
+-- ----------------------------
+INSERT INTO `m_supplier` VALUES (1, '2001', '中国', '中国大连', '111', '222', 'www.111.com', '123', '111', '2222', 1, 'SYSTEM', '2022-06-29 22:56:13', 'SYSTEM', '2022-06-29 22:56:13', NULL);
+INSERT INTO `m_supplier` VALUES (2, '22222', 'IBM1', '黄泥川1', '1111', '2222', '3333', '22222', '444444', '555555', 1, 'eee', '2022-06-30 09:19:34', 'SYSTEM', '2022-06-30 09:19:34', NULL);
+
+-- ----------------------------
 -- Table structure for m_user
 -- ----------------------------
 DROP TABLE IF EXISTS `m_user`;
@@ -278,14 +299,14 @@ CREATE TABLE `m_vehicle`  (
   `Remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `IsDelete` int(0) NULL DEFAULT 0 COMMENT '物理删除标志',
   PRIMARY KEY (`Id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '车辆基本信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '车辆基本信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of m_vehicle
 -- ----------------------------
-INSERT INTO `m_vehicle` VALUES (1, '辽B 11111', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 0);
-INSERT INTO `m_vehicle` VALUES (2, '辽B 22222', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 0);
-INSERT INTO `m_vehicle` VALUES (3, '辽B 33333', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 0);
+INSERT INTO `m_vehicle` VALUES (1, '辽B 11111', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 1);
+INSERT INTO `m_vehicle` VALUES (2, '辽B 22222', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 1);
+INSERT INTO `m_vehicle` VALUES (3, '辽B 33333', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 1);
 INSERT INTO `m_vehicle` VALUES (4, '辽B 44444', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 0);
 INSERT INTO `m_vehicle` VALUES (5, '辽B 55555', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:33', 'SYSTEM', '2022-06-27 15:49:33', '新车，1000公里', 0);
 INSERT INTO `m_vehicle` VALUES (6, '辽B 66666', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:34', 'SYSTEM', '2022-06-27 15:49:34', '新车，1000公里', 0);
@@ -295,6 +316,7 @@ INSERT INTO `m_vehicle` VALUES (9, '辽B 99999', '大达运输', '东风', '红�
 INSERT INTO `m_vehicle` VALUES (10, '辽B 00000', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:34', 'SYSTEM', '2022-06-27 15:49:34', '新车，1000公里', 0);
 INSERT INTO `m_vehicle` VALUES (11, '辽B 01010', '大达运输', '东风', '红色', 5000.00, 6000.00, 'SYSTEM', '2022-06-27 15:49:34', 'SYSTEM', '2022-06-27 15:49:34', '新车，1000公里', 0);
 INSERT INTO `m_vehicle` VALUES (12, '辽F11111', 'tddd', 'dddd', 'dddd', 23.00, 235.00, 'me', '2022-06-29 18:43:12', 'SYSTEM', '2022-06-29 18:43:16', NULL, 0);
+INSERT INTO `m_vehicle` VALUES (13, '辽B22222', '大连大', '大众', '白色', 33.20, 22.30, '1234', '2022-06-29 22:43:29', '1234', '2022-06-29 22:43:29', NULL, 0);
 
 -- ----------------------------
 -- Table structure for t_approval
@@ -313,10 +335,16 @@ CREATE TABLE `t_approval`  (
   `CreateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
   `CreateTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `UpdateUser` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'SYSTEM',
-  `UpdateTime` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `UpdateTime` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `Remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '入场审批' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_approval
+-- ----------------------------
+INSERT INTO `t_approval` VALUES (1, '777', '666', '555', '444', '333', '222', '111', 1, 'SYSTEM', '2022-06-30 15:48:59', 'SYSTEM', '2022-06-30 15:48:59', NULL);
+INSERT INTO `t_approval` VALUES (2, '777', '666', '555', '444', '333', '222', '111', 1, 'SYSTEM', '2022-06-30 15:38:10', 'SYSTEM', '2022-06-30 15:38:10', NULL);
 
 -- ----------------------------
 -- Table structure for t_registration
@@ -342,5 +370,11 @@ CREATE TABLE `t_registration`  (
   `Remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '入场登记' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_registration
+-- ----------------------------
+INSERT INTO `t_registration` VALUES (1, '888', '777', '666', '555', '444', '333', NULL, NULL, '222', '111', 1, 'SYSTEM', '2022-06-30 16:33:13', 'SYSTEM', '2022-06-30 16:33:13', NULL);
+INSERT INTO `t_registration` VALUES (2, '888', '777', '666', '555', '444', '333', NULL, NULL, '222', '111', 1, 'SYSTEM', '2022-06-30 16:25:03', 'SYSTEM', '2022-06-30 16:25:03', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
