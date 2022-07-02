@@ -116,7 +116,7 @@ namespace IWS_Webapi.Controllers
 
                 // 数据插入
                 lstVehicle.Add(entity);
-                rtnValue = userBusiness.InsertData(DbHelper.GetMysqlConnection(), null, lstVehicle);
+                rtnValue = userBusiness.InsertData(DbHelper.GetMysqlConnection(), ref lstVehicle);
 
                 model.State = 1;
                 model.Data = lstVehicle;
