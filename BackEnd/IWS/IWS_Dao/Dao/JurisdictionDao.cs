@@ -1,4 +1,4 @@
-using IWS_Common.Const;
+﻿using IWS_Common.Const;
 using IWS_Common.Model;
 using IWS_Dao.DaoIF;
 using MySql.Data.MySqlClient;
@@ -210,7 +210,67 @@ namespace IWS_Dao.Dao
                 conn.Close();
             }
             return intReturnValue;
-        }        
+        }
+
+        /// <summary>
+        /// 数据插入
+        /// </summary>
+        /// <param name="conn">数据库连接</param>
+        /// <param name="dicCondition">条件集合</param>
+        /// <param name="lstData">数据集合（返回插入ID）</param>
+        /// <returns></returns>
+        public int InsertData(MySqlConnection conn, ref List<m_jurisdiction> lstData)
+        {
+            // 返回对象
+            int intReturnValue = 0;
+            // 数据库事务对象
+            MySqlTransaction tran = null;
+            // 数据库执行参数
+            MySqlParameter[] paras = null;
+
+            // 连接失效返回空
+            if (conn.State == System.Data.ConnectionState.Open) return 0;
+
+            try
+            {
+                tran = conn.BeginTransaction();
+                // 执行命令读取数据
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = CreateInsertSql();
+
+                    // 循环执行插入语句
+                    foreach (m_jurisdiction jurisdiction in lstData)
+                    {
+                        paras = CreateInsertParameter();
+                        paras[0].Value = jurisdiction.JurisdictionId;
+                        paras[1].Value = jurisdiction.JurisdictionLevel;
+                        paras[2].Value = jurisdiction.ParentID;
+                        paras[3].Value = jurisdiction.JurisdictionName;
+                        paras[4].Value = jurisdiction.JurisdictionPath;
+                        paras[5].Value = jurisdiction.IsDelete;
+                        paras[6].Value = jurisdiction.CreateUser;
+                        paras[7].Value = jurisdiction.CreateTime;
+                        paras[8].Value = jurisdiction.UpdateUser;
+                        paras[9].Value = jurisdiction.UpdateTime;
+
+                        intReturnValue = cmd.ExecuteNonQuery();
+                    }
+                }
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return intReturnValue;
+        }
 
         /// <summary>
         /// 数据更新
@@ -377,6 +437,44 @@ namespace IWS_Dao.Dao
         /// <param name="dicCondition">条件集合</param>
         /// <returns></returns>
         public override string CreateInsertSql(Dictionary<string, string> dicCondition)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(" insert into m_jurisdiction ");
+            sb.Append(" ( ");
+            sb.Append("         JurisdictionId, ");
+            sb.Append("         JurisdictionLevel, ");
+            sb.Append("         ParentID, ");
+            sb.Append("         JurisdictionName, ");
+            sb.Append("         JurisdictionPath, ");
+            sb.Append("         IsDelete, ");
+            sb.Append("         CreateUser, ");
+            sb.Append("         CreateTime, ");
+            sb.Append("         UpdateUser, ");
+            sb.Append("         UpdateTime ");
+            sb.Append(" ) ");
+            sb.Append(" values ");
+            sb.Append(" ( ");
+            sb.Append("         @JurisdictionId, ");
+            sb.Append("         @JurisdictionLevel, ");
+            sb.Append("         @ParentID, ");
+            sb.Append("         @JurisdictionName, ");
+            sb.Append("         @JurisdictionPath, ");
+            sb.Append("         @IsDelete, ");
+            sb.Append("         @CreateUser, ");
+            sb.Append("         @CreateTime, ");
+            sb.Append("         @UpdateUser, ");
+            sb.Append("         @UpdateTime ");
+            sb.Append(" ) ");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 创建数据库插入语句
+        /// </summary>
+        /// <returns></returns>
+        public override string CreateInsertSql()
         {
             StringBuilder sb = new StringBuilder();
 

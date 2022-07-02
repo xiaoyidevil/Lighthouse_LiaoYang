@@ -219,7 +219,72 @@ namespace IWS_Dao.Dao
                 conn.Close();
             }
             return intReturnValue;
-        }        
+        }
+
+        /// <summary>
+        /// 数据插入
+        /// </summary>
+        /// <param name="conn">数据库连接</param>
+        /// <param name="dicCondition">条件集合</param>
+        /// <param name="lstData">数据集合（返回插入ID）</param>
+        /// <returns></returns>
+        public int InsertData(MySqlConnection conn, ref List<t_approval> lstData)
+        {
+            // 返回对象
+            int intReturnValue = 0;
+            // 数据库事务对象
+            MySqlTransaction tran = null;
+            // 数据库执行参数
+            MySqlParameter[] paras = null;
+
+            // 连接失效返回空
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
+
+            try
+            {
+                tran = conn.BeginTransaction();
+                // 执行命令读取数据
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = CreateInsertSql();
+
+                    // 循环执行插入语句
+                    foreach (t_approval approval in lstData)
+                    {
+                        paras = CreateInsertParameter();
+                        paras[0].Value = approval.Id;
+                        paras[1].Value = approval.AdmisionType;
+                        paras[2].Value = approval.CompanyName;
+                        paras[3].Value = approval.UserName;
+                        paras[4].Value = approval.VehicleNumber;
+                        paras[5].Value = approval.EntranceGate;
+                        paras[6].Value = approval.Accption;
+                        paras[7].Value = approval.ApprovalState;
+                        paras[8].Value = GetDefualtDeleteFlg(approval.IsDelete);
+                        paras[9].Value = GetDefualtUser(approval.CreateUser);
+                        paras[10].Value = GetDefualtDatetime(approval.CreateTime);
+                        paras[11].Value = GetDefualtUser(approval.UpdateUser);
+                        paras[12].Value = GetDefualtDatetime(approval.UpdateTime);
+                        paras[13].Value = approval.Remark;
+                        cmd.Parameters.AddRange(paras);
+
+                        intReturnValue = cmd.ExecuteNonQuery();
+                    }
+                }
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return intReturnValue;
+        }
 
         /// <summary>
         /// 数据更新
@@ -397,6 +462,52 @@ namespace IWS_Dao.Dao
         /// <param name="dicCondition">条件集合</param>
         /// <returns></returns>
         public override string CreateInsertSql(Dictionary<string, string> dicCondition)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(" insert into t_approval ");
+            sb.Append(" ( ");
+            sb.Append("         Id, ");
+            sb.Append("         AdmisionType, ");
+            sb.Append("         CompanyName, ");
+            sb.Append("         UserName, ");
+            sb.Append("         VehicleNumber, ");
+            sb.Append("         EntranceGate, ");
+            sb.Append("         Accption, ");
+            sb.Append("         ApprovalState, ");
+            sb.Append("         IsDelete, ");
+            sb.Append("         CreateUser, ");
+            sb.Append("         CreateTime, ");
+            sb.Append("         UpdateUser, ");
+            sb.Append("         UpdateTime, ");
+            sb.Append("         Remark ");
+            sb.Append(" ) ");
+            sb.Append(" values ");
+            sb.Append(" ( ");
+            sb.Append("         @Id, ");
+            sb.Append("         @AdmisionType, ");
+            sb.Append("         @CompanyName, ");
+            sb.Append("         @UserName, ");
+            sb.Append("         @VehicleNumber, ");
+            sb.Append("         @EntranceGate, ");
+            sb.Append("         @Accption, ");
+            sb.Append("         @ApprovalState, ");
+            sb.Append("         @IsDelete, ");
+            sb.Append("         @CreateUser, ");
+            sb.Append("         @CreateTime, ");
+            sb.Append("         @UpdateUser, ");
+            sb.Append("         @UpdateTime, ");
+            sb.Append("         @Remark ");
+            sb.Append(" ) ");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 创建数据库插入语句
+        /// </summary>
+        /// <returns></returns>
+        public override string CreateInsertSql()
         {
             StringBuilder sb = new StringBuilder();
 

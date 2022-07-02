@@ -162,6 +162,72 @@ namespace IWS_Dao.Dao
         }
 
         /// <summary>
+        /// 数据插入
+        /// </summary>
+        /// <param name="conn">数据库连接</param>
+        /// <param name="dicCondition">条件集合</param>
+        /// <param name="lstData">数据集合（返回插入ID）</param>
+        /// <returns></returns>
+        public int InsertData(MySqlConnection conn, ref List<m_supplier> lstData)
+        {
+            // 返回对象
+            int intReturnValue = 0;
+            // 数据库事务对象
+            MySqlTransaction tran = null;
+            // 数据库执行参数
+            MySqlParameter[] paras = null;
+
+            // 连接失效返回空
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
+
+            try
+            {
+                tran = conn.BeginTransaction();
+                // 执行命令读取数据
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = CreateInsertSql();
+
+                    // 循环执行插入语句
+                    foreach (m_supplier supplier in lstData)
+                    {
+                        paras = CreateInsertParameter();
+                        paras[0].Value = supplier.SupplierId;
+                        paras[1].Value = supplier.CompanyName;
+                        paras[2].Value = supplier.CompanyAddress;
+                        paras[3].Value = supplier.PostCode1;
+                        paras[4].Value = supplier.PostCode2;
+                        paras[5].Value = supplier.Website;
+                        paras[6].Value = supplier.NatureEnterprise;
+                        paras[7].Value = supplier.Tel;
+                        paras[8].Value = supplier.Fax;
+                        paras[9].Value = GetDefualtDeleteFlg(supplier.IsDelete);
+                        paras[10].Value = GetDefualtUser(supplier.CreateUser);
+                        paras[11].Value = GetDefualtDatetime(supplier.CreateTime);
+                        paras[12].Value = GetDefualtUser(supplier.UpdateUser);
+                        paras[13].Value = GetDefualtDatetime(supplier.UpdateTime);
+                        paras[14].Value = supplier.Remark;
+                        cmd.Parameters.AddRange(paras);
+
+                        intReturnValue += cmd.ExecuteNonQuery();
+                    }
+                }
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return intReturnValue;
+        }
+
+        /// <summary>
         /// 数据查询
         /// </summary>
         /// <param name="conn">数据库连接对象</param>
@@ -374,6 +440,54 @@ namespace IWS_Dao.Dao
         /// <param name="dicCondition">条件集合</param>
         /// <returns></returns>
         public override string CreateInsertSql(Dictionary<string, string> dicCondition)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(" insert into m_supplier ");
+            sb.Append(" ( ");
+            sb.Append("         SupplierId, ");
+            sb.Append("         CompanyName, ");
+            sb.Append("         CompanyAddress, ");
+            sb.Append("         PostCode1, ");
+            sb.Append("         PostCode2, ");
+            sb.Append("         Website, ");
+            sb.Append("         NatureEnterprise, ");
+            sb.Append("         Tel, ");
+            sb.Append("         Fax, ");
+            sb.Append("         IsDelete, ");
+            sb.Append("         CreateUser, ");
+            sb.Append("         CreateTime, ");
+            sb.Append("         UpdateUser, ");
+            sb.Append("         UpdateTime, ");
+            sb.Append("         Remark ");
+            sb.Append(" ) ");
+            sb.Append(" values ");
+            sb.Append(" ( ");
+            sb.Append("         @SupplierId, ");
+            sb.Append("         @CompanyName, ");
+            sb.Append("         @CompanyAddress, ");
+            sb.Append("         @PostCode1, ");
+            sb.Append("         @PostCode2, ");
+            sb.Append("         @Website, ");
+            sb.Append("         @NatureEnterprise, ");
+            sb.Append("         @Tel, ");
+            sb.Append("         @Fax, ");
+            sb.Append("         @IsDelete, ");
+            sb.Append("         @CreateUser, ");
+            sb.Append("         @CreateTime, ");
+            sb.Append("         @UpdateUser, ");
+            sb.Append("         @UpdateTime, ");
+            sb.Append("         @Remark ");
+            sb.Append(" ) ");
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 创建数据库插入语句
+        /// </summary>
+        /// <returns></returns>
+        public override string CreateInsertSql()
         {
             StringBuilder sb = new StringBuilder();
 

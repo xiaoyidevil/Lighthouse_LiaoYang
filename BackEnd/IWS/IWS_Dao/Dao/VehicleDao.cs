@@ -1,4 +1,4 @@
-using IWS_Common.Const;
+﻿using IWS_Common.Const;
 using IWS_Common.Model;
 using IWS_Dao.DaoIF;
 using MySql.Data.MySqlClient;
@@ -201,7 +201,81 @@ namespace IWS_Dao.Dao
                         paras[11].Value = vehicle.Remark;
                         cmd.Parameters.AddRange(paras);
 
-                        intReturnValue += cmd.ExecuteNonQuery();                        
+                        intReturnValue += cmd.ExecuteNonQuery();
+                    }
+                }
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return intReturnValue;
+        }
+
+        /// <summary>
+        /// 数据插入
+        /// </summary>
+        /// <param name="conn">数据库连接</param>
+        /// <param name="dicCondition">条件集合</param>
+        /// <param name="lstData">数据集合</param>
+        /// <returns></returns>
+        public int InsertData(MySqlConnection conn, ref List<m_vehicle> lstData)
+        {
+            // 返回对象
+            int intReturnValue = 0;
+            // 数据库事务对象
+            MySqlTransaction tran = null;
+            // 数据库执行参数
+            MySqlParameter[] paras = null;
+
+            // 连接失效返回空
+            if (conn.State != System.Data.ConnectionState.Open) return 0;
+
+            try
+            {
+                tran = conn.BeginTransaction();
+                // 执行命令读取数据
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = CreateInsertSql();
+
+                    // 循环执行插入语句
+
+                    for (int i = 0;i< lstData.Count; i++)
+                    {
+                        m_vehicle vehicle = lstData[i];
+                        paras = CreateInsertParameter();
+                        paras[0].Value = vehicle.VehicleNumber;
+                        paras[1].Value = vehicle.CompanyName;
+                        paras[2].Value = vehicle.BrandModel;
+                        paras[3].Value = vehicle.Color;
+                        paras[4].Value = vehicle.Weight;
+                        paras[5].Value = vehicle.FullLoadWeight;
+                        paras[6].Value = GetDefualtDeleteFlg(vehicle.IsDelete);
+                        paras[7].Value = GetDefualtUser(vehicle.CreateUser);
+                        paras[8].Value = GetDefualtDatetime(vehicle.CreateTime);
+                        paras[9].Value = GetDefualtUser(vehicle.UpdateUser);
+                        paras[10].Value = GetDefualtDatetime(vehicle.UpdateTime);
+                        paras[11].Value = vehicle.Remark;
+                        cmd.Parameters.AddRange(paras);
+
+                        //intReturnValue += cmd.ExecuteNonQuery();
+                        MySqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
+                        {
+                            lstData[i] = vehicle;
+                            int newId = 0;
+                            int.TryParse(dr[0].ToString(),out newId);
+                            lstData[i].Id = newId;
+                        }
+                        dr.Close();
                     }
                 }
                 tran.Commit();
@@ -422,11 +496,56 @@ namespace IWS_Dao.Dao
             sb.Append("         @UpdateUser, ");
             sb.Append("         @UpdateTime, ");
             sb.Append("         @Remark ");
-            sb.Append(" ) ");
+            sb.Append(" ); ");
+
+            //sb.AppendLine("SELECT LAST_INSERT_ID() AS NewVehicleId; ");
 
             return sb.ToString();
         }
 
+        /// <summary>
+        /// 创建数据库插入语句
+        /// </summary>
+        /// <returns></returns>
+        public override string CreateInsertSql()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(" insert into m_vehicle ");
+            sb.Append(" ( ");
+            sb.Append("         VehicleNumber, ");
+            sb.Append("         CompanyName, ");
+            sb.Append("         BrandModel, ");
+            sb.Append("         Color, ");
+            sb.Append("         Weight, ");
+            sb.Append("         FullLoadWeight, ");
+            sb.Append("         IsDelete, ");
+            sb.Append("         CreateUser, ");
+            sb.Append("         CreateTime, ");
+            sb.Append("         UpdateUser, ");
+            sb.Append("         UpdateTime, ");
+            sb.Append("         Remark ");
+            sb.Append(" ) ");
+            sb.Append(" values ");
+            sb.Append(" ( ");
+            sb.Append("         @VehicleNumber, ");
+            sb.Append("         @CompanyName, ");
+            sb.Append("         @BrandModel, ");
+            sb.Append("         @Color, ");
+            sb.Append("         @Weight, ");
+            sb.Append("         @FullLoadWeight, ");
+            sb.Append("         @IsDelete, ");
+            sb.Append("         @CreateUser, ");
+            sb.Append("         @CreateTime, ");
+            sb.Append("         @UpdateUser, ");
+            sb.Append("         @UpdateTime, ");
+            sb.Append("         @Remark ");
+            sb.Append(" ); ");
+
+            sb.AppendLine("SELECT LAST_INSERT_ID() AS NewVehicleId; ");
+
+            return sb.ToString();
+        }
         /// <summary>
         /// 创建查询参数
         /// </summary>
