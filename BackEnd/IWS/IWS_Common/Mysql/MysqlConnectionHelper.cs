@@ -26,25 +26,51 @@ namespace IWS_Common.Mysql
         /// <summary>
         /// 构造函数
         /// </summary>
+        //public MysqlConnectionHelper(string platForm)
+        //{
+        //    _connectionString = new MySqlConnectionStringBuilder();
+        //    _connectionString.UserID = "root";
+        //    _connectionString.Password = "root";
+        //    _connectionString.Server = "127.0.0.1";
+        //    _connectionString.Database = "iws_db";
+        //    _connectionString.AllowUserVariables = true;
+        //    switch (platForm)
+        //    {
+        //        case AppConst.Platform_Application:
+        //            _connectionString.MaximumPoolSize = 100;
+        //            _connectionString.MinimumPoolSize = 100;
+        //            break;
+        //        case AppConst.Platform_Webapi:
+        //            _connectionString.MaximumPoolSize = 3;
+        //            _connectionString.MinimumPoolSize = 3;
+        //            break;
+        //    }            
+        //}
+
         public MysqlConnectionHelper(string platForm)
         {
             _connectionString = new MySqlConnectionStringBuilder();
-            _connectionString.UserID = "root";
-            _connectionString.Password = "root";
-            _connectionString.Server = "127.0.0.1";
-            _connectionString.Database = "iws_db";
+            _connectionString.UserID = System.Configuration.ConfigurationManager.AppSettings["db_UserID"];
+            _connectionString.Password = System.Configuration.ConfigurationManager.AppSettings["db_Password"];
+            _connectionString.Server = System.Configuration.ConfigurationManager.AppSettings["db_Server"];
+            _connectionString.Database = System.Configuration.ConfigurationManager.AppSettings["db_Database"];
             _connectionString.AllowUserVariables = true;
+
+            uint iMaxPoolSize = 100;
+
             switch (platForm)
             {
                 case AppConst.Platform_Application:
-                    _connectionString.MaximumPoolSize = 100;
-                    _connectionString.MinimumPoolSize = 100;
+                    uint.TryParse(System.Configuration.ConfigurationManager.AppSettings["db_AppMaxPoolSize"], out iMaxPoolSize);
+                    _connectionString.MaximumPoolSize = iMaxPoolSize;
+                    _connectionString.MinimumPoolSize = iMaxPoolSize;
                     break;
                 case AppConst.Platform_Webapi:
-                    _connectionString.MaximumPoolSize = 1;
-                    _connectionString.MinimumPoolSize = 1;
+                    uint.TryParse(System.Configuration.ConfigurationManager.AppSettings["db_webAPIMaxPoolSize"], out iMaxPoolSize);
+                    _connectionString.MaximumPoolSize = iMaxPoolSize;
+                    _connectionString.MinimumPoolSize = iMaxPoolSize;
                     break;
-            }            
+            }
         }
         #endregion
 
