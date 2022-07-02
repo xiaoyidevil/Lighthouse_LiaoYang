@@ -34,6 +34,14 @@ namespace IWS_Business.BusinessIF
         /// <param name="dicCondition">条件集合</param>
         /// <param name="lstData">数据集合（可缺省）</param>
         /// <returns></returns>
+        int InsertData(MySqlConnection conn, ref List<T> lstData);
+
+        /// <summary>
+        /// 数据库追加数据
+        /// </summary>
+        /// <param name="dicCondition">条件集合</param>
+        /// <param name="lstData">数据集合（可缺省）</param>
+        /// <returns></returns>
         int UpdateData(MySqlConnection conn, Dictionary<string, string> dicCondition, List<T> lstData = null);
 
         /// <summary>
