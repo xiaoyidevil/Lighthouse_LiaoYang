@@ -61,6 +61,27 @@ namespace IWS_Business.Business
         }
 
         /// <summary>
+        /// 数据追加
+        /// </summary>
+        /// <param name="lstData">数据集合（可缺省）</param>
+        /// <returns></returns>
+        public int InsertData(MySqlConnection conn, ref List<m_vehicle> lstData )
+        {
+            int intReturnValue;
+            try
+            {
+                // 用户模型Dao层对象
+                InterfaceDao<m_vehicle> vehicleDao = new VehicleDao();
+                intReturnValue = vehicleDao.InsertData(conn, ref lstData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return intReturnValue;
+        }
+
+        /// <summary>
         /// 数据查询
         /// </summary>
         /// <param name="dicCondition">条件集合</param>
