@@ -34,6 +34,12 @@ namespace IWS_Dao.DaoIF
         public abstract string CreateInsertSql(Dictionary<string, string> dicCondition);
 
         /// <summary>
+        /// 创建数据库插入Sql
+        /// </summary>
+        /// <returns></returns>
+        public abstract string CreateInsertSql();
+
+        /// <summary>
         /// 创建数据库更新Sql
         /// </summary>
         /// <param name="dicCondition">条件集合</param>
