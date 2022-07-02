@@ -32,6 +32,7 @@ namespace IWS_Common.Const
         #region 消息信息
         public const string Excute_Success = "执行成功";                        // 执行成功信息
         public const string Excute_NoData = "没有数据被执行";                   // 没有数据被执行
+        public const string Login_Success = "登录成功";                        // 登录成功信息
         #endregion
     }
 }
