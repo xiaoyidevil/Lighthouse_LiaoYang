@@ -1,0 +1,39 @@
+-- ----------------------------
+-- Records of m_role_jurisdiction
+-- ----------------------------
+INSERT INTO `m_role_jurisdiction` VALUES (1, 1, 1, 0, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 1, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 2, 1, 0, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 2, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 3, 1, 0, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 3, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 4, 1, 0, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 4, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 5, 1, 0, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 5, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 6, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 7, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 8, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 9, 2, 1, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 10, 2, 2, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 11, 2, 2, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 12, 2, 3, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 13, 2, 3, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 14, 2, 3, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 15, 2, 3, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 16, 2, 3, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 17, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 18, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 19, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 20, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 21, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 22, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 23, 2, 4, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 24, 2, 5, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 25, 2, 5, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 26, 2, 5, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 27, 2, 5, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (1, 28, 2, 5, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (2, 2, 1, 0, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (2, 10, 2, 2, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
+INSERT INTO `m_role_jurisdiction` VALUES (2, 11, 2, 2, 'SYSTEM', '2022-06-27 15:48:16', 'SYSTEM', '2022-06-27 15:48:16', 0);
